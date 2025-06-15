@@ -12,7 +12,7 @@
       <link>https://hitorikoishi.github.io/</link>
     </image>
     
-    <atom:link href="https://hitorikoishi.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
     <pubDate>Tue, 04 Mar 2025 08:28:57 GMT</pubDate>
