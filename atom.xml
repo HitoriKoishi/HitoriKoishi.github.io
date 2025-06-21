@@ -6,7 +6,7 @@
   <link href="https://hitorikoishi.github.io/atom.xml" rel="self"/>
   
   <link href="https://hitorikoishi.github.io/"/>
-  <updated>2025-03-04T08:28:57.016Z</updated>
+  <updated>2025-06-21T12:18:32.539Z</updated>
   <id>https://hitorikoishi.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Google File System 笔记</title>
+    <link href="https://hitorikoishi.github.io/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/"/>
+    <id>https://hitorikoishi.github.io/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/</id>
+    <published>2025-06-21T12:17:57.000Z</published>
+    <updated>2025-06-21T12:18:32.539Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;GFS&lt;/h1&gt;
+&lt;p&gt;使用了单一主控方式，master仅储存文件的元数据，包括区块命名空间，文件和区块的映射，以及每个区块副本的位置，这些都直接存储在master的内存里，因此访问速度很快&lt;/p&gt;
+&lt;p&gt;操作日志很重要，是元数据的持久性记录，并且充当了定义并发操作顺序的</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>c++ whale market项目总结</title>
