@@ -6,7 +6,7 @@
   <link href="https://hitorikoishi.github.io/atom.xml" rel="self"/>
   
   <link href="https://hitorikoishi.github.io/"/>
-  <updated>2025-06-21T12:26:12.349Z</updated>
+  <updated>2025-06-21T12:35:26.036Z</updated>
   <id>https://hitorikoishi.github.io/</id>
   
   <author>
@@ -21,16 +21,16 @@
     <link href="https://hitorikoishi.github.io/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/"/>
     <id>https://hitorikoishi.github.io/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/</id>
     <published>2025-06-21T12:17:57.000Z</published>
-    <updated>2025-06-21T12:26:12.349Z</updated>
+    <updated>2025-06-21T12:35:26.036Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;h1&gt;GFS&lt;/h1&gt;
-&lt;p&gt;使用了单一主控方式，master仅储存文件的元数据，包括区块命名空间，文件和区块的映射，以及每个区块副本的位置，这些都直接存储在master的内存里，因此访问速度很快&lt;/p&gt;
-&lt;p&gt;操作日志很重要，是元数据的持久性记录，并且充当了定义并发操作顺序的</summary>
+    <summary type="html">&lt;p&gt;使用了单一主控方式，master仅储存文件的元数据，包括区块命名空间，文件和区块的映射，以及每个区块副本的位置，这些都直接存储在master的内存里，因此访问速度很快&lt;/p&gt;
+&lt;p&gt;操作日志很重要，是元数据的持久性记录，并且充当了定义并发操作顺序的逻辑时间线&lt;/p&gt;
+&lt;h2</summary>
         
       
     
