@@ -6,7 +6,7 @@
   <link href="https://hitorikoishi.github.io/atom.xml" rel="self"/>
   
   <link href="https://hitorikoishi.github.io/"/>
-  <updated>2025-06-21T12:18:32.539Z</updated>
+  <updated>2025-06-21T12:26:12.349Z</updated>
   <id>https://hitorikoishi.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://hitorikoishi.github.io/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/"/>
     <id>https://hitorikoishi.github.io/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/</id>
     <published>2025-06-21T12:17:57.000Z</published>
-    <updated>2025-06-21T12:18:32.539Z</updated>
+    <updated>2025-06-21T12:26:12.349Z</updated>
     
     
       
@@ -36,6 +36,8 @@
     
     
     
+    
+    <category term="GFS" scheme="https://hitorikoishi.github.io/tags/GFS/"/>
     
   </entry>
   
