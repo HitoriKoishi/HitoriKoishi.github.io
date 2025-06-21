@@ -15,32 +15,8 @@
     <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Sat, 21 Jun 2025 12:28:24 GMT</pubDate>
+    <pubDate>Sat, 21 Jun 2025 12:26:12 GMT</pubDate>
     <generator>http://hexo.io/</generator>
-    
-    <item>
-      <title>test</title>
-      <link>https://hitorikoishi.github.io/2025/06/21/test/</link>
-      <guid>https://hitorikoishi.github.io/2025/06/21/test/</guid>
-      <pubDate>Sat, 21 Jun 2025 12:28:08 GMT</pubDate>
-      
-        
-        
-          
-          
-      <description>&lt;p&gt;nihao&lt;/p&gt;
-</description>
-          
-        
-      
-      
-      
-      
-      
-      
-      <comments>https://hitorikoishi.github.io/2025/06/21/test/#disqus_thread</comments>
-      
-    </item>
     
     <item>
       <title>Google File System 笔记</title>
