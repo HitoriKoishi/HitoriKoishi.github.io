@@ -15,8 +15,35 @@
     <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Sat, 21 Jun 2025 12:35:26 GMT</pubDate>
+    <pubDate>Tue, 24 Jun 2025 15:15:39 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Go语言入门</title>
+      <link>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/</link>
+      <guid>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/</guid>
+      <pubDate>Tue, 24 Jun 2025 15:15:11 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;h1&gt;程序结构&lt;/h1&gt;
+&lt;h3 id=&quot;声明与变量&quot;&gt;声明与变量&lt;/h3&gt;
+&lt;p&gt;在 Go 语言中，&lt;strong&gt;字面量（Literal）&lt;/strong&gt; 的概念和 C++</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://hitorikoishi.github.io/tags/Go/">Go</category>
+      
+      
+      <comments>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>Google File System 笔记</title>
