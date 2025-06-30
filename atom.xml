@@ -6,7 +6,7 @@
   <link href="https://hitorikoishi.github.io/atom.xml" rel="self"/>
   
   <link href="https://hitorikoishi.github.io/"/>
-  <updated>2025-06-24T15:15:39.823Z</updated>
+  <updated>2025-06-30T09:34:54.289Z</updated>
   <id>https://hitorikoishi.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
     <id>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/</id>
     <published>2025-06-24T15:15:11.000Z</published>
-    <updated>2025-06-24T15:15:39.823Z</updated>
+    <updated>2025-06-30T09:34:54.289Z</updated>
     
     
       
@@ -29,7 +29,7 @@
         
         
     <summary type="html">&lt;h1&gt;程序结构&lt;/h1&gt;
-&lt;h3 id=&quot;声明与变量&quot;&gt;声明与变量&lt;/h3&gt;
+&lt;h2 id=&quot;声明与变量&quot;&gt;声明与变量&lt;/h2&gt;
 &lt;p&gt;在 Go 语言中，&lt;strong&gt;字面量（Literal）&lt;/strong&gt; 的概念和 C++</summary>
         
       
