@@ -15,8 +15,37 @@
     <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Mon, 30 Jun 2025 09:34:54 GMT</pubDate>
+    <pubDate>Mon, 20 Oct 2025 08:21:33 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>LLM-CS336</title>
+      <link>https://hitorikoishi.github.io/2025/10/20/LLM-CS336/</link>
+      <guid>https://hitorikoishi.github.io/2025/10/20/LLM-CS336/</guid>
+      <pubDate>Mon, 20 Oct 2025 08:18:25 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;blockquote&gt;
+&lt;p&gt;从头构建大模型说是🔥☢️&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;标记化&lt;/h1&gt;
+&lt;h2</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://hitorikoishi.github.io/tags/LLM/">LLM</category>
+      
+      
+      <comments>https://hitorikoishi.github.io/2025/10/20/LLM-CS336/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>Go语言入门</title>

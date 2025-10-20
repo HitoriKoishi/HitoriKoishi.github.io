@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>LLM-CS336 | Aris系统已上线</title><meta name="author" content="HitoriKoishi"><meta name="copyright" content="HitoriKoishi"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="从头构建大模型说是🔥☢️  标记化 字节对编码标记器（BPE） 在字符分割中，可以直接使用Unicode转为UTF-8的方式产生字节编码序列 使用 re.escape 防止特殊字符被误解释（通过加入转义的方式避免正则判断出现错误），并使用 re.split 将特殊字符作为分割点分离原始文本 12345678910111213141516import regex as re# 多个特殊标记spe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM-CS336">
+<meta property="og:url" content="https://hitorikoishi.github.io/2025/10/20/LLM-CS336/index.html">
+<meta property="og:site_name" content="Aris系统已上线">
+<meta property="og:description" content="从头构建大模型说是🔥☢️  标记化 字节对编码标记器（BPE） 在字符分割中，可以直接使用Unicode转为UTF-8的方式产生字节编码序列 使用 re.escape 防止特殊字符被误解释（通过加入转义的方式避免正则判断出现错误），并使用 re.split 将特殊字符作为分割点分离原始文本 12345678910111213141516import regex as re# 多个特殊标记spe">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://hitorikoishi.github.io/img/background_3.png">
+<meta property="article:published_time" content="2025-10-20T08:18:25.000Z">
+<meta property="article:modified_time" content="2025-10-20T08:21:33.522Z">
+<meta property="article:author" content="HitoriKoishi">
+<meta property="article:tag" content="LLM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hitorikoishi.github.io/img/background_3.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "LLM-CS336",
+  "url": "https://hitorikoishi.github.io/2025/10/20/LLM-CS336/",
+  "image": "https://hitorikoishi.github.io/img/background_3.png",
+  "datePublished": "2025-10-20T08:18:25.000Z",
+  "dateModified": "2025-10-20T08:21:33.522Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "HitoriKoishi",
+      "url": "https://hitorikoishi.github.io/"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://hitorikoishi.github.io/2025/10/20/LLM-CS336/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LLM-CS336',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="Aris系统已上线" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="Aris系统已上线" type="application/rss+xml">
+</head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/background_3.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Aris系统已上线</span></a><a class="nav-page-title" href="/"><span class="site-name">LLM-CS336</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">LLM-CS336</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-10-20T08:18:25.000Z" title="Created 2025-10-20 16:18:25">2025-10-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-10-20T08:21:33.522Z" title="Updated 2025-10-20 16:21:33">2025-10-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>从头构建大模型说是🔥☢️</p>
+</blockquote>
+<h1>标记化</h1>
+<h2 id="字节对编码标记器（BPE）">字节对编码标记器（BPE）</h2>
+<p>在字符分割中，可以直接使用Unicode转为UTF-8的方式产生字节编码序列</p>
+<p>使用 re.escape 防止特殊字符被误解释（通过加入转义的方式避免正则判断出现错误），并使用 re.split 将特殊字符作为分割点分离原始文本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> regex <span class="keyword">as</span> re</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多个特殊标记</span></span><br><span class="line">special_tokens = [<span class="string">&quot;&lt;|endoftext|&gt;&quot;</span>, <span class="string">&quot;&lt;|startoftext|&gt;&quot;</span>, <span class="string">&quot;&lt;|pad|&gt;&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建分割模式</span></span><br><span class="line"><span class="comment"># 使用 re.escape 防止特殊字符被误解释</span></span><br><span class="line">delimiter_pattern = <span class="string">&quot;|&quot;</span>.join(re.escape(token) <span class="keyword">for</span> token <span class="keyword">in</span> special_tokens)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Pattern:&quot;</span>, delimiter_pattern)</span><br><span class="line"><span class="comment"># 输出: &lt;\|endoftext\|&gt;|&lt;\|startoftext\|&gt;|&lt;\|pad\|&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 re.split 分割文本</span></span><br><span class="line">text = <span class="string">&quot;Hello world&lt;|endoftext|&gt;This is another document&lt;|startoftext|&gt;And another&lt;|pad|&gt;Final text&quot;</span></span><br><span class="line">documents = re.split(delimiter_pattern, text)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Split result:&quot;</span>, documents)</span><br><span class="line"><span class="comment"># 输出: [&#x27;Hello world&#x27;, &#x27;This is another document&#x27;, &#x27;And another&#x27;, &#x27;Final text&#x27;]</span></span><br></pre></td></tr></table></figure>
+<p>一些加速方法，例如 <strong>BPE 算法</strong>迭代地统计每对字节，并识别出出现频率最高的字节对，将字节对表示为一个新的词库（在 0 ~ 255 外的一个数字，样例中定义为 256 ）。该方法能够通过迭代一定的次数减少token的长度</p>
+<blockquote>
+<p>这样做，token中所包含的信息会不会进一步让机器难以总结？🤔🤔</p>
+</blockquote>
+<p>与此同时，可以将大的数据文件切分成4KB左右大小的区块（保证一篇完整的文章不会从中间被切分）以便并行训练模型</p>
+<h1>pytorch</h1>
+<h2 id="张量">张量</h2>
+<p>张量的连续与否取决于该张量在内存中的储存是否连续，当你遇到 <code>view()</code> 报错（ <code>view()</code> 要求张量在内存中是连续的，因为它只是重新解释一个连续内存块的含义）或追求极致性能时，就需要考虑并使用 <code>.contiguous()</code> 来修复它。</p>
+<p>对于提取张量中的列，行，提取试图，转置等均不会创建原始张量的副本，**但<code>.contiguous()</code> 和 <code>.reshape()</code> 操作会返回一个在内存中连续存储的、包含相同数据的张量副本。**在使用时要谨慎</p>
+<h1>架构与超参数</h1>
+<h2 id="核心架构">核心架构</h2>
+<h3 id="标准化">标准化</h3>
+<p>layernorm 等正则化虽然只使用了极少的 FLOP ，但仍会耗费较多运行时间在内存移动上</p>
+<p><strong>相比于 layernorm ，RMS norm 不会减去均值并去除 β 参数，使得内存效率提高</strong></p>
+<p>去除偏差项会提高模型训练的稳定度，目前大多数大模型完全省略偏差项，仅在矩阵乘法类型上进行运算</p>
+<p><strong>目前基本上正确的做法是 pre-norm ，并且在残差流之外进行 LayerNorms，可以获得更好的梯度传播，更稳定的训练</strong></p>
+<h3 id="激活函数">激活函数</h3>
+<p>目前最新的模型都使用门控线性单元 SwiGLU 、 GeGLU</p>
+<p>GLU 有一个额外的超参数 V ，对于门控单元，要将待乘矩阵缩小一些以确保一切保持参数匹配</p>
+<h3 id="架构">架构</h3>
+<p>串行 or 并行</p>
+<p>目前大多数模型依旧采用串行架构</p>
+<h3 id="位置嵌入">位置嵌入</h3>
+<p>目前大多数模型采用 Rope embeddings</p>
+<p>Rope embeddings 旋转矢量，旋转角度由每个单词的位置和旋转决定</p>
+<p>其中确定角度的 θ 有一个时间表（类似于 sin cos 位置嵌入），可覆盖不同的频率范围以获取更高或更低频率的信息</p>
+<p>相对定位信息至关重要</p>
+<blockquote>
+<p><strong>Rope 作用原理仍需补充♿♿♿</strong></p>
+</blockquote>
+<h2 id="超参数">超参数</h2>
+<h3 id="前馈层维度">前馈层维度</h3>
+<p>从经验角度上讲，前馈层的维度等于 4 倍模型维度是较优的</p>
+<p>若使用 GLU ，前馈层的维度等于 8/3 倍模型维度</p>
+<p>前馈层矩阵越宽，能得到更多的并行计算，更好的系统优化收益，与扩大隐藏单元的作用方式不同</p>
+<h3 id="头部维度与头部数量">头部维度与头部数量</h3>
+<p>头部维度 == 模型维度 / 头部数量</p>
+<p>这只是一般共识，可以作出一些改变</p>
+<h3 id="纵横比">纵横比</h3>
+<p>模型维度 / 网络层数</p>
+<p>通常最佳点为 128 ，早期模型的该比例一般较小</p>
+<p>较好的区间为 100 - 200</p>
+<h3 id="词库大小（vocabulary-size）">词库大小（vocabulary size）</h3>
+<p>呈一个上升趋势</p>
+<p>已出世的生产化模型在 100 - 250k token 数量范围</p>
+<h2 id="剪枝及一些其他正则化">剪枝及一些其他正则化</h2>
+<p>剪枝（drop out）逐渐不再受青睐（大模型目前不存在过拟合的问题，甚至无法对训练数据进行一次迭代），权重衰减（weight decay）成为新兴</p>
+<p>不是为了控制过拟合（权重衰减大小与训练集和验证集的损失比例无关）， 而是与优化器的学习率发生作用，存在一些非常复杂的交互，因此其适用于更好的训练效果而不是避免过拟合</p>
+<h2 id="稳定性技巧">稳定性技巧</h2>
+<p>在训练时范数梯度和损失会遇到很多异常的由梯度爆炸造成的峰值</p>
+<p>一般在 softmax 函数上出现该问题</p>
+<p>可以使用 z-loss 替代 output softmax 来缓解这一问题</p>
+<p>使用 QK norm 替代注意力机制中的 softmax 产生稳定输出，是种非常严厉的干预</p>
+<p>也可以无脑加 layer norm （乐🤣）</p>
+<p><strong>在推理时仍然使用 layer norm ，layer norm 已经学习到了参数，去除会大幅改变模型参数</strong></p>
+<p>Logit soft-capping 没见过的新技术，通过tanh转换一些最大值</p>
+<h2 id="注意力头">注意力头</h2>
+<p>GQA / MQA</p>
+<p>算术强度：总计算操作开销 / 总内存访问开销，越大越好。GPU内存访问开销相对较大，目的是在单次内存访问中做尽可能多的计算（大数量的头，大的批量大小，大的序列长度都能提高这一指标）</p>
+<p>在推理时需要 KV cache 技术来增量式更新注意力来进行高校推理，避免整个 QK 矩阵的计算，处理绝对必要的 Key 和 Value 矩阵部分，<strong>但这会带来更高的内存访问量🤔</strong></p>
+<p>MQA 设置多个查询头，但对于键和值只能设置一个维度或一个头</p>
+<p>GQA 增加键和值的头</p>
+<p>稀疏注意力机制仅关注部分矩阵，权衡各种表达能力和运行时间，以此获得更大的注意力窗口</p>
+<p>滑动窗口注意力机制，在每一层只关注当前位置周围的一小块区域，控制所需的资源总量</p>
+<p>Transfomer Block，可以定义一些层使用完全自注意力或者滑动窗口自注意力（使用RoPE）</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="https://hitorikoishi.github.io">HitoriKoishi</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://hitorikoishi.github.io/2025/10/20/LLM-CS336/">https://hitorikoishi.github.io/2025/10/20/LLM-CS336/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LLM/">LLM</a></div><div class="post-share"><div class="social-share" data-image="/img/background_3.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/" title="Go语言入门"><img class="cover" src="/img/background_2.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">Go语言入门</div></div><div class="info-2"><div class="info-item-1">程序结构 声明与变量 在 Go 语言中，字面量（Literal） 的概念和 C++ 中的字面量非常相似，都是指在代码中直接表示固定值的符号或表达式。它们用于表示基本数据类型（如整数、浮点数、字符、字符串等）的常量值，而无需通过变量或计算来获取。    场景 短赋值 := 一般赋值 =     函数内声明新变量 ✅ ❌（需配合 var）   包作用域变量赋值 ❌ ✅   仅赋值（变量已声明） ❌ ✅   多变量赋值（含新变量） ✅ ❌   显式指定变量类型 ❌ ✅（配合 var）    流程控制 for Go 只有一种循环结构：for 循环。基本的 for 循环由三部分组成，它们用分号隔开，表达式外无需小括号 ( )，而大括号 &#123; &#125; 则是必须的 123for i := 0; i &lt; 10; i++ &#123;	sum += i+sum&#125; 初始化语句和后置语句是可选的，且可以去掉分号，此时for相当于C++中的while 123for sum &lt; 1000 &#123;    sum +=...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">HitoriKoishi</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">5</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HitoriKoishi"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/HitoriKoishi" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">record the moment</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">标记化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E5%AF%B9%E7%BC%96%E7%A0%81%E6%A0%87%E8%AE%B0%E5%99%A8%EF%BC%88BPE%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">字节对编码标记器（BPE）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">pytorch</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%A0%E9%87%8F"><span class="toc-number">2.1.</span> <span class="toc-text">张量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">架构与超参数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84"><span class="toc-number">3.1.</span> <span class="toc-text">核心架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%8C%96"><span class="toc-number">3.1.1.</span> <span class="toc-text">标准化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-number">3.1.2.</span> <span class="toc-text">激活函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84"><span class="toc-number">3.1.3.</span> <span class="toc-text">架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%BD%AE%E5%B5%8C%E5%85%A5"><span class="toc-number">3.1.4.</span> <span class="toc-text">位置嵌入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%85%E5%8F%82%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">超参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E9%A6%88%E5%B1%82%E7%BB%B4%E5%BA%A6"><span class="toc-number">3.2.1.</span> <span class="toc-text">前馈层维度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%B4%E9%83%A8%E7%BB%B4%E5%BA%A6%E4%B8%8E%E5%A4%B4%E9%83%A8%E6%95%B0%E9%87%8F"><span class="toc-number">3.2.2.</span> <span class="toc-text">头部维度与头部数量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%B5%E6%A8%AA%E6%AF%94"><span class="toc-number">3.2.3.</span> <span class="toc-text">纵横比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E5%BA%93%E5%A4%A7%E5%B0%8F%EF%BC%88vocabulary-size%EF%BC%89"><span class="toc-number">3.2.4.</span> <span class="toc-text">词库大小（vocabulary size）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AA%E6%9E%9D%E5%8F%8A%E4%B8%80%E4%BA%9B%E5%85%B6%E4%BB%96%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-number">3.3.</span> <span class="toc-text">剪枝及一些其他正则化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%B3%E5%AE%9A%E6%80%A7%E6%8A%80%E5%B7%A7"><span class="toc-number">3.4.</span> <span class="toc-text">稳定性技巧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E5%8A%9B%E5%A4%B4"><span class="toc-number">3.5.</span> <span class="toc-text">注意力头</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/10/20/LLM-CS336/" title="LLM-CS336"><img src="/img/background_3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LLM-CS336"/></a><div class="content"><a class="title" href="/2025/10/20/LLM-CS336/" title="LLM-CS336">LLM-CS336</a><time datetime="2025-10-20T08:18:25.000Z" title="Created 2025-10-20 16:18:25">2025-10-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/" title="Go语言入门"><img src="/img/background_2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Go语言入门"/></a><div class="content"><a class="title" href="/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/" title="Go语言入门">Go语言入门</a><time datetime="2025-06-24T15:15:11.000Z" title="Created 2025-06-24 23:15:11">2025-06-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/" title="Google File System 笔记"><img src="/img/background_1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Google File System 笔记"/></a><div class="content"><a class="title" href="/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/" title="Google File System 笔记">Google File System 笔记</a><time datetime="2025-06-21T12:17:57.000Z" title="Created 2025-06-21 20:17:57">2025-06-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/18/c-whale-market%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" title="c++ whale market项目总结"><img src="/img/background_4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="c++ whale market项目总结"/></a><div class="content"><a class="title" href="/2025/02/18/c-whale-market%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" title="c++ whale market项目总结">c++ whale market项目总结</a><time datetime="2025-02-18T10:10:30.000Z" title="Created 2025-02-18 18:10:30">2025-02-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/01/16/HelloWorld/" title="HelloWorld"><img src="/img/background_3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="HelloWorld"/></a><div class="content"><a class="title" href="/2025/01/16/HelloWorld/" title="HelloWorld">HelloWorld</a><time datetime="2025-01-16T05:38:05.000Z" title="Created 2025-01-16 13:38:05">2025-01-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2025 By HitoriKoishi</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.3.3</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

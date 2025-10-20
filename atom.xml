@@ -6,7 +6,7 @@
   <link href="https://hitorikoishi.github.io/atom.xml" rel="self"/>
   
   <link href="https://hitorikoishi.github.io/"/>
-  <updated>2025-06-30T09:34:54.289Z</updated>
+  <updated>2025-10-20T08:21:33.522Z</updated>
   <id>https://hitorikoishi.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>LLM-CS336</title>
+    <link href="https://hitorikoishi.github.io/2025/10/20/LLM-CS336/"/>
+    <id>https://hitorikoishi.github.io/2025/10/20/LLM-CS336/</id>
+    <published>2025-10-20T08:18:25.000Z</published>
+    <updated>2025-10-20T08:21:33.522Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;从头构建大模型说是🔥☢️&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;标记化&lt;/h1&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    
+    <category term="LLM" scheme="https://hitorikoishi.github.io/tags/LLM/"/>
+    
+  </entry>
   
   <entry>
     <title>Go语言入门</title>
