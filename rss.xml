@@ -31,8 +31,8 @@
       <description>&lt;blockquote&gt;
 &lt;p&gt;从头构建大模型说是🔥☢️&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h1&gt;标记化&lt;/h1&gt;
-&lt;h2</description>
+&lt;h1 id=&quot;biao-ji-hua&quot; id=&quot;标记化&quot;&gt;标记化&lt;/h1&gt;
+&lt;h2 id=&quot;zi-jie-dui-bian-ma-biao-ji-qi-bpe&quot;</description>
           
         
       
@@ -57,9 +57,9 @@
         
           
           
-      <description>&lt;h1&gt;程序结构&lt;/h1&gt;
-&lt;h2 id=&quot;声明与变量&quot;&gt;声明与变量&lt;/h2&gt;
-&lt;p&gt;在 Go 语言中，&lt;strong&gt;字面量（Literal）&lt;/strong&gt; 的概念和 C++</description>
+      <description>&lt;h1 id=&quot;cheng-xu-jie-gou&quot; id=&quot;程序结构&quot;&gt;程序结构&lt;/h1&gt;
+&lt;h2 id=&quot;sheng-ming-yu-bian-liang&quot; id=&quot;声明与变量&quot;&gt;声明与变量&lt;/h2&gt;
+&lt;p&gt;在 Go</description>
           
         
       
@@ -112,10 +112,7 @@
           
           
       <description>&lt;p&gt;第一次从无到有的构建了第一个多模块化复杂系统，根据教程完成了界面—系统—文件的三层信息交互，也算是由模仿走向创造的第一步&lt;/p&gt;
-&lt;h2 id=&quot;程序架构&quot;&gt;程序架构&lt;/h2&gt;
-&lt;p&gt;整体的程序大致分为三个主要部分：&lt;/p&gt;
-&lt;ul class=&quot;lvl-0&quot;&gt;
-&lt;li</description>
+&lt;h2 id=&quot;cheng-xu-jia-gou&quot;</description>
           
         
       
