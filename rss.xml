@@ -15,8 +15,35 @@
     <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Mon, 10 Nov 2025 06:52:26 GMT</pubDate>
+    <pubDate>Mon, 24 Nov 2025 14:13:21 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>Python日志库loguru</title>
+      <link>https://hitorikoishi.github.io/2025/11/24/Python%E6%97%A5%E5%BF%97%E5%BA%93loguru/</link>
+      <guid>https://hitorikoishi.github.io/2025/11/24/Python%E6%97%A5%E5%BF%97%E5%BA%93loguru/</guid>
+      <pubDate>Mon, 24 Nov 2025 14:12:57 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;h1 id=&quot;loguru-ku&quot; id=&quot;Loguru库&quot;&gt;Loguru库&lt;/h1&gt;
+&lt;h2 id=&quot;ri-zhi-ji-bie&quot; id=&quot;日志级别&quot;&gt;日志级别&lt;/h2&gt;
+&lt;p&gt;Loguru 默认有 8</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://hitorikoishi.github.io/tags/python-loguru/">python loguru</category>
+      
+      
+      <comments>https://hitorikoishi.github.io/2025/11/24/Python%E6%97%A5%E5%BF%97%E5%BA%93loguru/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>LLM-CS336</title>
