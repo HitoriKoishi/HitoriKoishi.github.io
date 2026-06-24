@@ -15,8 +15,33 @@
     <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Mon, 24 Nov 2025 14:13:21 GMT</pubDate>
+    <pubDate>Wed, 24 Jun 2026 13:49:46 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>RAG八股</title>
+      <link>https://hitorikoishi.github.io/2026/06/24/RAG%E5%85%AB%E8%82%A1/</link>
+      <guid>https://hitorikoishi.github.io/2026/06/24/RAG%E5%85%AB%E8%82%A1/</guid>
+      <pubDate>Wed, 24 Jun 2026 13:49:25 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;p&gt;&lt;strong&gt;RAG（Retrieval-Augmented Generation，检索增强生成）&lt;/strong&gt;</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://hitorikoishi.github.io/tags/RAG/">RAG</category>
+      
+      
+      <comments>https://hitorikoishi.github.io/2026/06/24/RAG%E5%85%AB%E8%82%A1/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>Python日志库loguru</title>
