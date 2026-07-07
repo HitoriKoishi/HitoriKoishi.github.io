@@ -1,0 +1,1124 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>文档LLM校勘 - 「昨日，你与云」</title>
+
+  
+    <meta name="description" content="Evo-Retriever——阿里巴巴云计算-CVPR-2026 研究目的 主要关注复杂视觉文档检索，即从大量的财务报表、合同、学术论文中，精准检索出包含图表、文本和特定排版的页面。 目的是解决三个问题   空间感知能力不足，即难以结合页面中空间距离较远但语义相关的节点共同理解，对复杂排版理解出现割裂   易受文本混淆影响，忽略了“文本相似但视觉不匹配”的样本   静态训练课程导致停滞，模型能力受">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文档LLM校勘">
+<meta property="og:url" content="https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/">
+<meta property="og:site_name" content="「昨日，你与云」">
+<meta property="og:description" content="Evo-Retriever——阿里巴巴云计算-CVPR-2026 研究目的 主要关注复杂视觉文档检索，即从大量的财务报表、合同、学术论文中，精准检索出包含图表、文本和特定排版的页面。 目的是解决三个问题   空间感知能力不足，即难以结合页面中空间距离较远但语义相关的节点共同理解，对复杂排版理解出现割裂   易受文本混淆影响，忽略了“文本相似但视觉不匹配”的样本   静态训练课程导致停滞，模型能力受">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-06-26T04:02:54.000Z">
+<meta property="article:modified_time" content="2026-06-28T08:44:40.929Z">
+<meta property="article:author" content="HitoriKoishi">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="多模态">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="LLM,多模态">
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/rss.xml" title="「昨日，你与云」" type="application/rss+xml">
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+    <link rel="shortcut icon" href="/img/avater.jpg">
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"HitoriKoishi","sameAs":[]},"dateCreated":"2026-06-26T12:02:54+08:00","dateModified":"2026-06-28T16:44:40+08:00","datePublished":"2026-06-26T12:02:54+08:00","description":"","headline":"文档LLM校勘","mainEntityOfPage":{"@type":"WebPage","@id":"https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/"},"publisher":{"@type":"Organization","name":"HitoriKoishi","sameAs":[]},"url":"https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/","keywords":"LLM, 多模态","image":[]}</script>
+  
+</head>
+<body><div class="sitebg"><div class="siteblur"></div></div>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/img/avatar.jpg" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">Aris</div><div class="sub normal cap">记录学习</div><div class="sub hover cap" style="opacity:0">分享折腾</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/"><span class="title">文档LLM校勘</span></a><a class="item title" href="/2026/06/24/RAG%E5%85%AB%E8%82%A1/"><span class="title">RAG八股</span></a><a class="item title" href="/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/"><span class="title">Google File System 笔记</span></a><a class="item title" href="/2025/11/24/Python%E6%97%A5%E5%BF%97%E5%BA%93loguru/"><span class="title">Python日志库loguru</span></a><a class="item title" href="/2025/10/20/LLM-CS336/"><span class="title">LLM-CS336</span></a><a class="item title" href="/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"><span class="title">Go语言入门</span></a><a class="item title" href="/2025/02/18/c-whale-market%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"><span class="title">c++ whale market项目总结</span></a><a class="item title" href="/2025/01/16/HelloWorld/"><span class="title">HelloWorld</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/HitoriKoishi" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-06-26T04:02:54.000Z">2026-06-26</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-06-28T08:44:40.929Z">2026-06-28</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>文档LLM校勘</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h2 id="evo-retriever-a-li-ba-ba-yun-ji-suan-cvpr-2026" id="Evo-Retriever——阿里巴巴云计算-CVPR-2026">Evo-Retriever——阿里巴巴云计算-CVPR-2026</h2>
+<h3 id="yan-jiu-mu-de" id="研究目的">研究目的</h3>
+<p>主要关注复杂视觉文档检索，即从大量的财务报表、合同、学术论文中，精准检索出包含图表、文本和特定排版的页面。</p>
+<p>目的是解决三个问题</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>空间感知能力不足</strong>，即难以结合页面中空间距离较远但语义相关的节点共同理解，对复杂排版理解出现割裂</p>
+</li>
+<li class="lvl-2">
+<p><strong>易受文本混淆影响</strong>，忽略了“文本相似但视觉不匹配”的样本</p>
+</li>
+<li class="lvl-2">
+<p><strong>静态训练课程导致停滞</strong>，模型能力受限于初始的静态负样本，没有学习到更多知识</p>
+</li>
+</ul>
+<h3 id="he-xin-chuang-xin" id="核心创新">核心创新</h3>
+<p>提出了三个核心架构：</p>
+<h4 id="strong-duo-shi-jiao-tu-xiang-dui-qi-strong-mva-multi-view-image-alignment" id="多视角图像对齐（MVA-Multi-View-Image-Alignment）"><strong>多视角图像对齐</strong>（MVA - Multi-View Image Alignment）</h4>
+<p>在训练时，除了原始图像外，还会通过水平拼接、降采样、旋转等方式构建出<strong>多视角复合图像</strong>。这些图像并行通过共享的视觉编码器，并利用一致性损失（Consistency Loss）强行让模型在不同尺度和旋转角度下都能与文本查询保持表示一致</p>
+<p><strong>构造多视角图像</strong></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>多尺度与降采样（Multi-scale &amp; Downsampling）：</strong> 将大图缩小或切片，模拟用户在不同分辨率或缩放比例下查看文档。</p>
+</li>
+<li class="lvl-2">
+<p><strong>空间旋转与拼接（Rotation &amp; Splicing）：</strong> 将图像进行水平拼接或角度微调，将空间上原本较远的节点以不同的相对位置呈现给模型。</p>
+</li>
+</ul>
+<p>原始图像 $I_i$ 和多视角图像 $I_i^{mv}$ 会被并行输入到同一个共享权重的视觉编码器（Visual Encoder，如 SigLIP）中，分别生成它们的多向量表征$E(I_i)$ 和 $E(I_i^{mv})$，同时，文本查询 $Q_i$ 也会通过文本编码器生成其表征 $E(Q_i)$。</p>
+<h4 id="strong-shuang-xiang-dui-bi-xue-xi-strong-bcl-bidirectional-contrastive-learning" id="双向对比学习（BCL-Bidirectional-Contrastive-Learning）"><strong>双向对比学习</strong>（BCL - Bidirectional Contrastive Learning）</h4>
+<p>除了传统的“查询 $\rightarrow$ 文档”检索路径，引入了<strong>反向的“文档 $\rightarrow$ 查询”路径</strong>。论文利用一个自动化的“难负查询合成（HNQS）”流水线，让大模型（VLM）为每个正样本对合成语法或上下文极其相似、但语义实际上与该文档图片不符的“假查询”（Hard Negative Queries）</p>
+<h5 id="duo-shi-jiao-tu-xiang-dui-qi-sun-shi" id="多视角图像对齐损失">多视角图像对齐损失</h5>
+<p>通过引入多视角复合图像 $I^{mv}$ 来增强模型空间感知能力的一致性损失函数<br>
+$$<br>
+\mathcal{L}<em>{mva} = \mathcal{L}</em>{forward} + \alpha \cdot \mathcal{L}_{backward}<br>
+$$</p>
+<p>$$<br>
+\mathcal{L}<em>{forward}(Q，I</em>{pos},{I_{neg}}) = \sum_{k=1}^{K}\log(1+\exp( \frac{sim(Q, I_{neg}^{(k)})-sim(Q, I_{pos})}{\tau}))<br>
+$$</p>
+<p><strong>$\mathcal{L}_{vc}$</strong>：视角一致性损失（Viewpoint Consistency Loss）。</p>
+<p><strong>$I_i^{mv}$</strong>：第 $i$ 个样本经过裁剪、拼接或旋转等数据增强后生成的<strong>多视角复合图像</strong>。</p>
+<p><strong>$\alpha$</strong>：平衡原始图像对齐与多视角对齐的权重超参数。</p>
+<h5 id="ji-yu-col-pali-feng-ge-de-late-interaction-wan-qi-jiao-hu-jian-suo-ji-zhi" id="基于-ColPali-风格的-“Late-Interaction”（晚期交互）-检索机制：">基于 ColPali 风格的 “Late Interaction”（晚期交互） 检索机制：</h5>
+<p>$$<br>
+sim(Q, I) = \sum_{i=1}^{L_{Q}} \max_{j=1}^{L_{I}} (E_Q(Q)_l \cdot E_I(I)_j^T)<br>
+$$</p>
+<p>这个公式计算的是文本 $Q$ 和图像 $I$ 之间的<strong>相似度得分（Score）</strong>。</p>
+<p>对于 Query 来说：$N$ 是文本 Token 的数量，对于 Image 来说：$M$ 是图像 Visual Token 的数量</p>
+<p>它的计算逻辑称为 <strong>MaxSim（最大相似度操作）</strong>：</p>
+<ol>
+<li class="lvl-3">
+<p><strong>挨个对比（矩阵乘法）：</strong> 拿 Query 里的某一个文本 Token 向量，去跟图像里所有的 $M$ 个视觉 Token 向量逐一计算相似度。</p>
+</li>
+<li class="lvl-3">
+<p><strong>找出最爱（$\max$）：</strong> 图像里总有一个格子和这个文本词最相关，通过 $\max_{j}$ 挑出那个<strong>最匹配的最高分</strong>。</p>
+</li>
+<li class="lvl-3">
+<p><strong>全部相加（$\sum$）：</strong> 文本里总共有 $N$ 个 Token，就把这 $N$ 个 Token 各自找到的最高匹配分全部加起来（$\sum_{i=1}^{N}$），这就得到了最终的总得分。</p>
+</li>
+</ol>
+<blockquote>
+<p>这里的思路明显利用的 ViT 的分块构建过程，通过一种与 RAG 向量数据库中计算 top-20 相似向量的方式计算图像和文字的相似关系，以此训练大模型，很有趣的观点</p>
+</blockquote>
+<p>$$<br>
+\begin{gather}<br>
+\mathcal{L}<em>{forward}= \mathcal{L}(Q</em>{pos}，I_{ori},{I_{neg}})+\beta\cdot\mathcal{L}(Q_{pos}，I_{ori}<sup>{aug},{I_{neg}</sup>{aug}}) \<br>
+{L}<em>{backward}=\mathcal{L}(I</em>{ori}，Q_{pos},{Q_{neg}})+\beta\cdot\mathcal{L}(I_{ori}^{aug}，Q_{pos},{Q_{neg}})<br>
+\end{gather}<br>
+$$</p>
+<h3 id="da-mo-xing-yin-dao-de-yan-jin-ke-cheng-llm-ec" id="大模型引导的演进课程（LLM-EC）">大模型引导的演进课程（LLM-EC）</h3>
+<blockquote>
+<p>类似于 RAG 该部分也分为离线和在线阶段</p>
+</blockquote>
+<p><strong>离线阶段</strong></p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>难负样本挖掘与划分</strong>：系统首先利用传统检索方法或基础 VLM，计算所有负样本（干扰文档/文本）与正样本之间的相似度。</p>
+<p><strong>构建难度桶（Difficulty Buckets）</strong>：根据相似度得分，将这些负样本精准地划分到不同的“候选池”中（例如划分成 16 个从易到难的题目桶）。</p>
+<p><strong>难负查询合成（HNQS）</strong>：利用高能力的大模型（VLM）离线为每个文档生成那些文字高度相似、但视觉事实冲突的“假查询”（Hard Negative Queries），并一同存入候选池。</p>
+</li>
+</ul>
+<p>在线阶段</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>实时监控</strong>：当模型在 GPU 上开始训练时，系统会实时收集模型在当前 batch 上的Loss 曲线和学习速度。</p>
+<p><strong>动态调整</strong>：外部的 LLM 元控制器（Meta-Controller）作为一个在线的守护进程，每隔一段时间就去读取这些 Loss。过滤出产生“有效学习”（Loss 在 0.3 到 1.2 之间）的难度区间，并选择其中最具挑战性的区间作为主力训练的锚点。</p>
+<p><strong>难度晋级（课程演进）</strong>：LLM 动态决定接下来从“离线候选池”的哪个难度桶里抽题喂给模型。如果模型学得好，LLM 在线修改采样权重 $w_k$，直接把更难的题发下去，如果学的不好就降低难度</p>
+</li>
+</ul>
+<h3 id="shi-yan-jie-guo-yu-fen-xi" id="实验结果与分析">实验结果与分析</h3>
+<p>用Qwen2.5-VL-3B-Instruct and Qwen2.5-VL-7B-Instruct作为基底，480k 个训练对，LoRA rank 为 32，模型有3B、7B，在8张H20显卡上并行计算，元控制器使用 Qwen3-235B-A22B，通过其 API 访问，alpha和beta超参数都设置为1</p>
+<p><strong>ViDoRe V2 榜单：</strong> Evo-Retriever-7B 取得了 <strong>65.2%</strong> 的 nDCG@5 得分，相比之前的最佳模型 llama-nemoretriever 提升了 <strong>1.7%</strong></p>
+<p><strong>MMEB (VisDoc) 榜单：</strong> Evo-Retriever-7B 取得了 <strong>77.12%</strong> 的优异成绩</p>
+<h2 id="doc-seeker-hua-zhong-ke-ji-da-xue-hua-wei-cvpr-2026" id="DocSeeker——华中科技大学，华为-CVPR-2026">DocSeeker——华中科技大学，华为-CVPR-2026</h2>
+<h3 id="yan-jiu-mu-de-1" id="研究目的-2">研究目的</h3>
+<p>现有的多模态大语言模型（MLLMs）在处理“长文档”时性能会严重下降，面临两个问题：</p>
+<p><strong>低信噪比（Low SNR）</strong>：关键证据往往埋藏在大量无关的页面中。</p>
+<p><strong>监督信号稀缺（Supervision Scarcity）</strong>：现有的长文档问答（VQA）数据集通常只提供最终的简短答案，缺乏中间的推理和定位步骤。这导致模型容易死记硬背，不仅缺乏可解释性，而且在面对分布外（OOD）的长文档时泛化能力很差</p>
+<h3 id="he-xin-chuang-xin-1" id="核心创新-2">核心创新</h3>
+<p>引入了一种模仿人类认知过程的“分析-定位-推理”（Analysis-Localization-Reasoning, 简称 ALR）视觉推理范式</p>
+<h4 id="ye-mian-gan-zhi-de-shu-ru-biao-shi" id="页面感知的输入表示">页面感知的输入表示</h4>
+<p>DocSeeker 将<strong>文本页面标识符</strong>（例如 <code>&quot;Page i&quot;</code> 的文本嵌入向量 $e_i$）与该页对应的<strong>视觉 Token</strong>（图像经 Vision Transformer 和 Adapter 处理后的向量 $v_i$）进行了交织拼接 。<br>
+$$<br>
+X = e_Q \oplus  \bigoplus_{i=1}^N (e_i \oplus v_i)<br>
+$$</p>
+<p>其中 $e_Q$ 是用户问题的文本嵌入，$N$ 为总页数 。这种设计相当于在每个页面的视觉信息前加上了一个“指针”或“锚点”，强制模型在处理视觉 Token 时感知到当前处于哪一页 。</p>
+<h4 id="xian-shi-zheng-ju-ji-chu-de-jie-gou-hua-tui-li-fan-shi" id="显式证据基础的结构化推理范式">显式证据基础的结构化推理范式</h4>
+<p>将“思考过程（<code>&lt;think&gt;</code>）”与“最终答案（<code>&lt;answer&gt;</code>）”显式分离的做法 ，DocSeeker 强制模型输出一条严格、可解释且结构化的推理路径 $Y$<br>
+$$<br>
+Y = Y_{th} \oplus Y_{ans} = (Y_A \oplus Y_L \oplus Y_R) \oplus (Y_E \oplus Y_F)<br>
+$$<br>
+模型被要求规范化地输出以下五个部分 ：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>问题分析 ($Y_A$, Question Analysis)</strong>：解构和分析用户的真实意图 。</p>
+</li>
+<li class="lvl-2">
+<p><strong>证据定位 ($Y_L$, Evidence Localization)</strong>：扫描文档并显式报告哪些页面包含相关信息，以及<strong>为什么</strong>相关 。这是视觉证据落地的核心 。</p>
+</li>
+<li class="lvl-2">
+<p><strong>推理过程 ($Y_R$, Reasoning Process)</strong>：综合来自这几页的证据进行深度逻辑推理 。</p>
+</li>
+<li class="lvl-2">
+<p><strong>证据页码 ($Y_E$, Evidence Pages)</strong>：在 <code>&lt;answer&gt;</code> 标签中直接给出包含证据的页面 ID 列表 。</p>
+</li>
+<li class="lvl-2">
+<p><strong>最终答案 ($Y_F$, Final Answer)</strong>：给出精简、准确的最终问答结果 。</p>
+</li>
+</ul>
+<h4 id="xun-lian-liu-cheng" id="训练流程">训练流程</h4>
+<p><strong>阶段 I：通过 SFT 注入 ALR 范式 (Injecting the ALR Paradigm via SFT)</strong></p>
+<p>由于现有的长文档数据集只提供“长文档输入 $\rightarrow$ 简短答案”对，缺乏中间的推理标签（即面临监督信号稀缺的问题） 。因此，第一阶段需要构建高质量的结构化数据 ：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><strong>高效数据蒸馏</strong>：作者并未使用传统昂贵的“全文档提示（Full-document prompting）”去让闭源模型生成数据。而是采用了极简上下文（Minimal Context）<strong>策略——只将真正的</strong>正确证据页（Ground-truth pages）以及极少数的干扰页输入给导师模型（Gemini-2.5-Flash），并让其生成完整的 ALR 格式响应 。</p>
+</li>
+<li class="lvl-2">
+<p><strong>双重验证流水线</strong>：生成数据后，先进行自动的精确匹配（Exact Match）检查；对于未完全匹配的样本，再使用 GPT-4o 进行语义验证，挽救那些由于微小格式差异或同义改写导致的正确样本，最大化确保数据的高质量</p>
+</li>
+<li class="lvl-2">
+<p><strong>全文档微调</strong>：利用这批高质数据对基座模型进行标准的交叉熵损失（SFT）微调 。在训练时，输入的是<strong>包含全部页面的完整长文档</strong> ，以此训练模型的整体长文本推理能力，避免其死记硬背 。</p>
+</li>
+</ul>
+<p><strong>阶段 II：证据感知的 GRPO 强化学习 (Evidence-aware GRPO)</strong></p>
+<p>单靠 SFT 的模仿学习，模型生成的推理路径往往是次优的 。为了进一步突破上限，作者引入了强化学习（RL）阶段，采用 <strong>GRPO（组相对策略优化）</strong> 算法，让模型直接从结果信号中学习 。 作者为长文档 VQA 任务量身定制了一个多维度联合奖励函数：<br>
+$$<br>
+R = \lambda_1 R_{format} + \lambda_2 R_{evidence} + \lambda_3 R_{answer}<br>
+$$</p>
+<ol>
+<li class="lvl-3">
+<p><strong>格式奖励 ($R_{format}$)</strong>：二值奖励（0或1），确保模型输出完全符合 <code>&lt;think&gt;</code>、<code>&lt;answer&gt;</code> 及内部子模块的标签规范 。</p>
+</li>
+<li class="lvl-3">
+<p><strong>证据定位奖励 ($R_{evidence}$)</strong>：根据模型识别的证据页面准确率打分 。它使用了<strong>加权的 F1 分数（通常 $\beta &gt; 1$）</strong>，这意味着该奖励<strong>更看重召回率（Recall）而非精确率（Precision）</strong>，鼓励模型“宁可多找，不能漏掉” 。</p>
+</li>
+<li class="lvl-3">
+<p><strong>答案奖励 ($R_{answer}$)</strong>：采用标准的平均归一化编辑相似度（ANLS）指标，评估最终文本答案的正确性 。</p>
+</li>
+</ol>
+<h4 id="zheng-ju-yin-dao-de-fen-bian-lu-fen-pei-ce-lue-evidence-guided-resolution-allocation-egra" id="证据引导的分辨率分配策略-Evidence-Guided-Resolution-Allocation-EGRA">证据引导的分辨率分配策略 (Evidence-Guided Resolution Allocation, EGRA)</h4>
+<p>为了解决计算瓶颈（显存爆炸）而提出的关键工程策略，贯穿 SFT 和 GRPO 两个训练阶段 。</p>
+<p>在训练阶段，若将长文档的每一页都保持高分辨率输入，会产生海量的视觉 Token，极易导致显存溢出（OOM）</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>实行<strong>差异化的图像分辨率分配</strong></p>
+<ul class="lvl-2">
+<li class="lvl-4"><strong>真实证据页（Ground-truth evidence pages）</strong>：100% 保持原生的高分辨率（保留细节以供推理） 。</li>
+<li class="lvl-4"><strong>非证据页（Non-evidence pages）</strong>：随机选择其中 <strong>70%</strong> 的页面，将其分辨率从 1024 猛烈降采样到 256（极大地削减了 Visual Token 数量）；剩下 <strong>30%</strong> 的非证据页保持原图高分辨率 。</li>
+</ul>
+</li>
+<li class="lvl-2">
+<p>在推理（Inference）时，所有页面都会恢复到原生高分辨率（因为推理不需要保存反向传播的梯度，显存占用低） 。实验证明，EGRA 策略不仅解决了显存问题，还因为在训练中提升了数据的信噪比，其最终性能甚至超越了“固定分辨率”或“直接删掉无关页”的朴素基线方法 。</p>
+</li>
+</ul>
+<h3 id="shi-yan-jie-guo-yu-fen-xi-1" id="实验结果与分析-2">实验结果与分析</h3>
+<p>使用 Qwen-2.5-VL-7B-Instruct 作为基底，在16 张NVIDIA A800GPUs上训练，SFT 两个 epoch，RL 6 个 epoch</p>
+<p>格式奖励 ($R_{format}$)权重 0.1，证据定位奖励 ($R_{evidence}$)权重0.3，答案奖励 ($R_{answer}$)权重 0.6，加权 F1 分数 $\beta = 2$，文档页面分辨率为 1024 x 784，针对每一个训练提示词（Prompt），模型会同时采样并生成 16 个不同的答案候选（rollout group size of 16）</p>
+<p>DUDE 和 MPDocVQA 采用 ANLS (Average Normalized Levenshtein Similarity, 平均归一化编辑距离相似度)，</p>
+<p>MMLongBench-doc 和 LongDocURL 采用 Acc (Accuracy, 准确率)，SlideVQA 采用 F1 Score (F1 值)</p>
+<h2 id="orca-si-fa-ke-si-shu-zi-yan-jiu-zhong-xin-tu-ni-si-li-gong-xue-xiao-jia-tai-ji-da-xue-ba-sai-luo-na-zi-zhi-da-xue-ji-suan-ji-shi-jue-zhong-xin-cvpr-2026" id="ORCA——斯法克斯数字研究中心，突尼斯理工学校，迦太基大学，巴塞罗那自治大学，计算机视觉中心-CVPR-2026">ORCA——斯法克斯数字研究中心，突尼斯理工学校，迦太基大学，巴塞罗那自治大学，计算机视觉中心-CVPR-2026</h2>
+<blockquote>
+<p>像啊，很像啊</p>
+</blockquote>
+<h3 id="yan-jiu-mu-de-2" id="研究目的-3">研究目的</h3>
+<p>现有的多模态视觉语言模型（VLM）虽然在文档理解上取得了长足进步，但在面对复杂的、多步骤的、涉及文档多种元素（如表格、图表、手写字体混合）的问答时，往往表现不佳：</p>
+<ol>
+<li class="lvl-3">
+<p><strong>缺乏任务拆解能力：</strong> 现有模型往往习惯“一步到位”直接输出答案，在遇到复杂的多步推理问题时容易出错。</p>
+</li>
+<li class="lvl-3">
+<p><strong>缺乏领域特长：</strong> 传统模型用单一参数去处理所有类型的内容。实际上，处理手写字识别（OCR）和处理表格提取（Table Parsing）所需要的专业能力是截然不同的。</p>
+</li>
+<li class="lvl-3">
+<p><strong>缺乏自我验证与自适应性：</strong> 单一模型给出的预测答案没有置信度评估，生成了错误答案也无法自我纠正。</p>
+</li>
+</ol>
+<h3 id="he-xin-chuang-xin-2" id="核心创新-3">核心创新</h3>
+<p>将整个推理过程分为五个阶段</p>
+<h4 id="strong-1-shang-xia-wen-li-jie-strong" id="1-上下文理解"><strong>1. 上下文理解</strong></h4>
+<p>基于具备强思考能力的模型，同时分析问题和文档。它会生成一条结构化的推理路径 （将复杂问题拆解为多个逻辑步骤，并给出一个初始答案 $a_{T}$。</p>
+<h4 id="strong-2-xie-zuo-zhuan-jia-zhi-xing-strong" id="2-协作专家执行"><strong>2. 协作专家执行</strong></h4>
+<p>在一个智能体池中包含了 <strong>9 个术业有专攻的特种智能体</strong>（分别负责处理：OCR、文档布局、表格/列表、图表/示意图、表单、图像/照片、自由文本、判断任务和其他）。路由智能体根据阶段一的推理路径，动态激活最相关的几个特种智能体；并决定它们的执行顺序，串联执行并输出一个<strong>专家答案 $a_{E}$</strong></p>
+<p>此处每个特种智能体都是由  Qwen3VL 8B 经过微调而来</p>
+<p>这里的路由可以抽象为一个多标签分类任务，并且没使用 sigmoid激活函数，使用Turbo DFS 进行 decode</p>
+<h5 id="yan-ma-ji-zhi" id="掩码机制">掩码机制</h5>
+<p>系统会将思考智能体推导出来的<strong>初始答案 $a_T$​ 隐去（遮蔽）</strong>，传递给专家智能体的，<strong>只有分解后的推理路径（Reasoning Steps）和原始文档/问题</strong>。这样就强迫特种专家智能体必须“独立思考”，纯粹根据分配给它的子任务和文档图像去推导它自己的专家答案 $a_E$，为之后的辩论环节提供执行可能。</p>
+<h4 id="strong-3-ya-li-ce-shi-strong" id="3-压力测试"><strong>3. 压力测试</strong></h4>
+<p>如果专家答案 $a_{E}$ 和初始答案 $a_{T}$ 一致，则直接跳到阶段五；如果不一致，则触发压力测试。辩论智能体（Debate Agent）会针对专家答案提出具有挑战性的追问，由评估智能体判断特种智能体能否顶住压力、逻辑自洽地维持原判。如果未通过，则说明存在不确定性，进入阶段四。</p>
+<p>在这一环节，辩论智能体扮演“挑刺者”的角色，针对专家给出的答案 $a_E$ 提出带有挑战性的、批判性的追问（Challenge Question）以及一个针对原问题的可能经过修改的答案。<strong>判定分流：</strong> 评估智能体审视专家智能体在面对挑衅时的回答。如果专家答案展现出完美的逻辑自洽与高置信度，则<strong>测试通过</strong>，直接确认该答案并跳过后续复杂的辩论；如果专家答案被问动摇了，或逻辑出现漏洞，则<strong>测试失败</strong>，说明此题是个“硬骨头”，必须升级进入下一环节。</p>
+<h4 id="strong-4-duo-lun-bian-lun-strong" id="4-多轮辩论"><strong>4. 多轮辩论</strong></h4>
+<p>由正方智能体坚守专家答案 $a_{E}$，反方智能体提出替代答案 $a_{alt}$ 并给出反驳证据。它们在裁判智能体（Judge Agent）的监督下进行 3 轮结构化的辩论（包含引用、批判、结论）。最终由裁判根据辩论展现出来的置信度和语言逻辑决定最终答案 $a_{C}$。</p>
+<h4 id="strong-5-da-an-xiao-dui-strong" id="5-答案校对"><strong>5. 答案校对</strong></h4>
+<p>由一个检查智能体（Sanity Checker）对最终答案进行标点符号、空格格式的微调，确保输出格式完全符合原文档的习惯（这对于测评指标 VQA ANLS 极为重要）</p>
+<p><strong>各个agent的LLM选型</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">**智能体角色 **</th>
+<th style="text-align:left">选型模型</th>
+<th style="text-align:left"><strong>模型规模/特点 (Scale &amp; Feature)</strong></th>
+<th style="text-align:left"><strong>在 ORCA 流程中的核心职责 (Core Responsibility)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>思考智能体 (Thinker)</strong></td>
+<td style="text-align:left">GLM-4V-9B</td>
+<td style="text-align:left">具备强推理能力的多模态模型</td>
+<td style="text-align:left">负责<strong>阶段一（上下文理解）</strong>。同时分析文档与问题，将复杂问题拆解为结构化的推理路径，并给出初始预测答案。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>路由智能体 (Router)</strong></td>
+<td style="text-align:left">Qwen2.5-VL-7B</td>
+<td style="text-align:left">带有针对性微调的适配器（Adapter）</td>
+<td style="text-align:left">负责<strong>阶段二（智能体路由）</strong>。根据思考智能体拆解出的推理路径，动态激活并编排专家码头（Agent Dock）中最相关的特种智能体。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>通用特种智能体 (Specialist_Model)</strong></td>
+<td style="text-align:left">Qwen3-VL-8B</td>
+<td style="text-align:left">高性价比的多模态大模型</td>
+<td style="text-align:left">负责<strong>阶段二（专家执行）</strong>。作为专家码头的基础底座，处理大部分标准的多模态文档视觉问答任务。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>视觉特种专家 (Vision_Expert)</strong></td>
+<td style="text-align:left">InternVL3</td>
+<td style="text-align:left">具备强视觉感知与精细特征提取能力的模型</td>
+<td style="text-align:left">负责<strong>阶段二（专家执行）</strong>。专门应对需要超高图像分辨率、复杂版面对齐或图像细节识别的特种任务（如高难度照片、图表分析）。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>OCR特种专家 (OCR_Model)</strong></td>
+<td style="text-align:left">Qwen2-VL-OCR-2B</td>
+<td style="text-align:left">轻量且专注于文本识别的模型</td>
+<td style="text-align:left">负责<strong>阶段二（专家执行）</strong>。专注处理文档中的手写体识别、密集文本提取等纯文字层面的 OCR 任务。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>正方智能体 (Thesis Agent)</strong></td>
+<td style="text-align:left">Qwen3VL-8B-Instruct</td>
+<td style="text-align:left">具备多模态理解与逻辑论证能力的模型</td>
+<td style="text-align:left">负责<strong>阶段三与阶段四（压力测试与多轮辩论）</strong>。在辩论中扮演正方，为初始答案提供支持性论据。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>反方智能体 (Antithesis Agent)</strong></td>
+<td style="text-align:left">InternVL3-8B-hfQwen-3-1.7B</td>
+<td style="text-align:left">具备多模态理解与对抗性推理能力的模型轻量且支持 Thinking (CoT) 推理的模型</td>
+<td style="text-align:left">负责<strong>阶段三与阶段四（压力测试与多轮辩论）</strong>。在辩论中扮演反方，对初始答案提出质疑与对抗性论证。负责<strong>阶段五（答案精细化调整）</strong>。对最终答案进行标点、空格和格式校对，确保输出完全符合评测集的规范标准（如 ANLS 指标要求）。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>辩论与评估智能体 (Evaluation &amp; Judge Agent)</strong></td>
+<td style="text-align:left">Qwen3-1.7B</td>
+<td style="text-align:left">具备纯文本强逻辑与对话能力的模型</td>
+<td style="text-align:left">负责<strong>阶段三与阶段四（压力测试与多轮辩论）</strong>。当初始答案与专家答案冲突时，扮演裁判角色，综合正反方观点，通过多轮对抗辩论推导最终答案。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>检查与精细化智能体 (Sanity Checker)</strong></td>
+<td style="text-align:left">Qwen3VL-8B-Instruct</td>
+<td style="text-align:left">轻量且支持 Thinking (CoT) 推理的模型</td>
+<td style="text-align:left">负责<strong>阶段五（答案精细化调整）</strong>。对最终答案进行标点、空格和格式校对，确保输出完全符合评测集的规范标准（如 ANLS 指标要求）。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="shi-yan-jie-guo-yu-fen-xi-2" id="实验结果与分析-3">实验结果与分析</h3>
+<p>实验平台</p>
+<p>推理：≥ 48 GB VRAM，4 × L4 GPUs，兄弟，你占用还蛮大的</p>
+<p>训练和实验：4 NVIDIA L4 GPUs, each with 24GB VRAM (96GB total VRAM) and 175GB RAM，WoW</p>
+<p>实验结果固然很好，对于77%的样例推理延迟是 Qwen3VL-8B 的20倍</p>
+<p><strong>以下都是堆 agent 的论文</strong></p>
+<h2 id="resolving-evidence-sparsity-fu-dan-fei-jie-ke-si-zi-jie" id="Resolving-Evidence-Sparsity——复旦，飞捷科思，字节">Resolving Evidence Sparsity——复旦，飞捷科思，字节</h2>
+<h2 id="visual-document-understanding-and-reasoning-xin-jia-po-guo-li-da-xue-teng-xun-you-tu-qing-hua-da-xue-zhong-guo-ke-xue-ji-zhu-da-xue-nan-yang-li-gong-da-xue-zhe-jiang-da-xue-deepwisdom-cvpr-2026" id="Visual-Document-Understanding-and-Reasoning——新加坡国立大学，腾讯优图，清华大学，中国科学技术大学，南阳理工大学，浙江大学，deepwisdom-CVPR-2026">Visual Document Understanding and Reasoning——新加坡国立大学，腾讯优图，清华大学，中国科学技术大学，南阳理工大学，浙江大学，deepwisdom-CVPR-2026</h2>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/06/24/RAG%E5%85%AB%E8%82%A1/">RAG八股</a></div></section></div>
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap" style="column-count:1;"><div class="sitemap-group"><span class="fs15">博客</span><a href="/">近期发布</a><a href="/blog/categories/">分类</a><a href="/blog/tags/">标签</a><a href="/blog/archives/">归档</a></div></div><div class="text"><p>本站由 <a href="/">HitoriKoishi</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1">Stellar 1.33.1</a> 主题创建。本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#evo-retriever-a-li-ba-ba-yun-ji-suan-cvpr-2026"><span class="toc-text">Evo-Retriever——阿里巴巴云计算-CVPR-2026</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#yan-jiu-mu-de"><span class="toc-text">研究目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#he-xin-chuang-xin"><span class="toc-text">核心创新</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#strong-duo-shi-jiao-tu-xiang-dui-qi-strong-mva-multi-view-image-alignment"><span class="toc-text">多视角图像对齐（MVA - Multi-View Image Alignment）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strong-shuang-xiang-dui-bi-xue-xi-strong-bcl-bidirectional-contrastive-learning"><span class="toc-text">双向对比学习（BCL - Bidirectional Contrastive Learning）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#duo-shi-jiao-tu-xiang-dui-qi-sun-shi"><span class="toc-text">多视角图像对齐损失</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ji-yu-col-pali-feng-ge-de-late-interaction-wan-qi-jiao-hu-jian-suo-ji-zhi"><span class="toc-text">基于 ColPali 风格的 “Late Interaction”（晚期交互） 检索机制：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#da-mo-xing-yin-dao-de-yan-jin-ke-cheng-llm-ec"><span class="toc-text">大模型引导的演进课程（LLM-EC）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shi-yan-jie-guo-yu-fen-xi"><span class="toc-text">实验结果与分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#doc-seeker-hua-zhong-ke-ji-da-xue-hua-wei-cvpr-2026"><span class="toc-text">DocSeeker——华中科技大学，华为-CVPR-2026</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#yan-jiu-mu-de-1"><span class="toc-text">研究目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#he-xin-chuang-xin-1"><span class="toc-text">核心创新</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ye-mian-gan-zhi-de-shu-ru-biao-shi"><span class="toc-text">页面感知的输入表示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#xian-shi-zheng-ju-ji-chu-de-jie-gou-hua-tui-li-fan-shi"><span class="toc-text">显式证据基础的结构化推理范式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#xun-lian-liu-cheng"><span class="toc-text">训练流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#zheng-ju-yin-dao-de-fen-bian-lu-fen-pei-ce-lue-evidence-guided-resolution-allocation-egra"><span class="toc-text">证据引导的分辨率分配策略 (Evidence-Guided Resolution Allocation, EGRA)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shi-yan-jie-guo-yu-fen-xi-1"><span class="toc-text">实验结果与分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#orca-si-fa-ke-si-shu-zi-yan-jiu-zhong-xin-tu-ni-si-li-gong-xue-xiao-jia-tai-ji-da-xue-ba-sai-luo-na-zi-zhi-da-xue-ji-suan-ji-shi-jue-zhong-xin-cvpr-2026"><span class="toc-text">ORCA——斯法克斯数字研究中心，突尼斯理工学校，迦太基大学，巴塞罗那自治大学，计算机视觉中心-CVPR-2026</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#yan-jiu-mu-de-2"><span class="toc-text">研究目的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#he-xin-chuang-xin-2"><span class="toc-text">核心创新</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#strong-1-shang-xia-wen-li-jie-strong"><span class="toc-text">1. 上下文理解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strong-2-xie-zuo-zhuan-jia-zhi-xing-strong"><span class="toc-text">2. 协作专家执行</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#yan-ma-ji-zhi"><span class="toc-text">掩码机制</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strong-3-ya-li-ce-shi-strong"><span class="toc-text">3. 压力测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strong-4-duo-lun-bian-lun-strong"><span class="toc-text">4. 多轮辩论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strong-5-da-an-xiao-dui-strong"><span class="toc-text">5. 答案校对</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shi-yan-jie-guo-yu-fen-xi-2"><span class="toc-text">实验结果与分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#resolving-evidence-sparsity-fu-dan-fei-jie-ke-si-zi-jie"><span class="toc-text">Resolving Evidence Sparsity——复旦，飞捷科思，字节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#visual-document-understanding-and-reasoning-xin-jia-po-guo-li-da-xue-teng-xun-you-tu-qing-hua-da-xue-zhong-guo-ke-xue-ji-zhu-da-xue-nan-yang-li-gong-da-xue-zhe-jiang-da-xue-deepwisdom-cvpr-2026"><span class="toc-text">Visual Document Understanding and Reasoning——新加坡国立大学，腾讯优图，清华大学，中国科学技术大学，南阳理工大学，浙江大学，deepwisdom-CVPR-2026</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

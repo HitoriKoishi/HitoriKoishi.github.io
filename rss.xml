@@ -3,25 +3,25 @@
   xmlns:atom="http://www.w3.org/2005/Atom"
   xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Aris系统已上线</title>
+    <title>「昨日，你与云」</title>
     <link>https://hitorikoishi.github.io/</link>
     
     <image>
       <url>https://hitorikoishi.github.io/icon.png</url>
-      <title>Aris系统已上线</title>
+      <title>「昨日，你与云」</title>
       <link>https://hitorikoishi.github.io/</link>
     </image>
     
     <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Fri, 26 Jun 2026 09:33:19 GMT</pubDate>
+    <pubDate>Sun, 28 Jun 2026 08:44:40 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
       <title>文档LLM校勘</title>
-      <link>https://hitorikoishi.github.io/2026/06/26/%E6%96%87%E6%A1%A3LLM%E6%A0%A1%E5%8B%98/</link>
-      <guid>https://hitorikoishi.github.io/2026/06/26/%E6%96%87%E6%A1%A3LLM%E6%A0%A1%E5%8B%98/</guid>
+      <link>https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/</link>
+      <guid>https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/</guid>
       <pubDate>Fri, 26 Jun 2026 04:02:54 GMT</pubDate>
       
         
@@ -29,7 +29,7 @@
           
           
       <description>&lt;h2 id=&quot;evo-retriever-a-li-ba-ba-yun-ji-suan-cvpr-2026&quot; id=&quot;Evo-Retriever——阿里巴巴云计算-CVPR-2026&quot;&gt;Evo-Retriever——阿里巴巴云计算-CVPR-2026&lt;/h2&gt;
-&lt;h2</description>
+&lt;h3</description>
           
         
       
@@ -42,7 +42,7 @@
       <category domain="https://hitorikoishi.github.io/tags/%E5%A4%9A%E6%A8%A1%E6%80%81/">多模态</category>
       
       
-      <comments>https://hitorikoishi.github.io/2026/06/26/%E6%96%87%E6%A1%A3LLM%E6%A0%A1%E5%8B%98/#disqus_thread</comments>
+      <comments>https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/#disqus_thread</comments>
       
     </item>
     
