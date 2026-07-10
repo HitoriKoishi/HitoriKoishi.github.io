@@ -28,7 +28,7 @@
 <meta property="og:description" content="Evo-Retriever——阿里巴巴云计算-CVPR-2026 研究目的 主要关注复杂视觉文档检索，即从大量的财务报表、合同、学术论文中，精准检索出包含图表、文本和特定排版的页面。 目的是解决三个问题   空间感知能力不足，即难以结合页面中空间距离较远但语义相关的节点共同理解，对复杂排版理解出现割裂   易受文本混淆影响，忽略了“文本相似但视觉不匹配”的样本   静态训练课程导致停滞，模型能力受">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-06-26T04:02:54.000Z">
-<meta property="article:modified_time" content="2026-06-28T08:44:40.929Z">
+<meta property="article:modified_time" content="2026-07-10T02:40:37.277Z">
 <meta property="article:author" content="HitoriKoishi">
 <meta property="article:tag" content="LLM">
 <meta property="article:tag" content="多模态">
@@ -52,7 +52,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"HitoriKoishi","sameAs":[]},"dateCreated":"2026-06-26T12:02:54+08:00","dateModified":"2026-06-28T16:44:40+08:00","datePublished":"2026-06-26T12:02:54+08:00","description":"","headline":"文档LLM校勘","mainEntityOfPage":{"@type":"WebPage","@id":"https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/"},"publisher":{"@type":"Organization","name":"HitoriKoishi","sameAs":[]},"url":"https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/","keywords":"LLM, 多模态","image":[]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"HitoriKoishi","sameAs":[]},"dateCreated":"2026-06-26T12:02:54+08:00","dateModified":"2026-07-10T10:40:37+08:00","datePublished":"2026-06-26T12:02:54+08:00","description":"","headline":"文档LLM校勘","mainEntityOfPage":{"@type":"WebPage","@id":"https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/"},"publisher":{"@type":"Organization","name":"HitoriKoishi","sameAs":[]},"url":"https://hitorikoishi.github.io/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/","keywords":"LLM, 多模态","image":[]}</script>
   
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -84,7 +84,7 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-06-26T04:02:54.000Z">2026-06-26</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-06-28T08:44:40.929Z">2026-06-28</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-06-26T04:02:54.000Z">2026-06-26</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-07-10T02:40:37.277Z">2026-07-10</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -127,20 +127,20 @@
 <h4 id="strong-shuang-xiang-dui-bi-xue-xi-strong-bcl-bidirectional-contrastive-learning" id="双向对比学习（BCL-Bidirectional-Contrastive-Learning）"><strong>双向对比学习</strong>（BCL - Bidirectional Contrastive Learning）</h4>
 <p>除了传统的“查询 $\rightarrow$ 文档”检索路径，引入了<strong>反向的“文档 $\rightarrow$ 查询”路径</strong>。论文利用一个自动化的“难负查询合成（HNQS）”流水线，让大模型（VLM）为每个正样本对合成语法或上下文极其相似、但语义实际上与该文档图片不符的“假查询”（Hard Negative Queries）</p>
 <h5 id="duo-shi-jiao-tu-xiang-dui-qi-sun-shi" id="多视角图像对齐损失">多视角图像对齐损失</h5>
-<p>通过引入多视角复合图像 $I^{mv}$ 来增强模型空间感知能力的一致性损失函数<br>
-$$<br>
-\mathcal{L}<em>{mva} = \mathcal{L}</em>{forward} + \alpha \cdot \mathcal{L}_{backward}<br>
-$$</p>
-<p>$$<br>
-\mathcal{L}<em>{forward}(Q，I</em>{pos},{I_{neg}}) = \sum_{k=1}^{K}\log(1+\exp( \frac{sim(Q, I_{neg}^{(k)})-sim(Q, I_{pos})}{\tau}))<br>
-$$</p>
+<p>通过引入多视角复合图像 $I^{mv}$ 来增强模型空间感知能力的一致性损失函数</p>
+$$
+\mathcal{L}_{mva} = \mathcal{L}_{forward} + \alpha \cdot \mathcal{L}_{backward}
+$$
+$$
+\mathcal{L}_{forward}(Q, I_{pos}, \{I_{neg}\}) = \sum_{k=1}^{K}\log(1+\exp( \frac{sim(Q, I_{neg}^{(k)})-sim(Q, I_{pos})}{\tau}))
+$$
 <p><strong>$\mathcal{L}_{vc}$</strong>：视角一致性损失（Viewpoint Consistency Loss）。</p>
 <p><strong>$I_i^{mv}$</strong>：第 $i$ 个样本经过裁剪、拼接或旋转等数据增强后生成的<strong>多视角复合图像</strong>。</p>
 <p><strong>$\alpha$</strong>：平衡原始图像对齐与多视角对齐的权重超参数。</p>
 <h5 id="ji-yu-col-pali-feng-ge-de-late-interaction-wan-qi-jiao-hu-jian-suo-ji-zhi" id="基于-ColPali-风格的-“Late-Interaction”（晚期交互）-检索机制：">基于 ColPali 风格的 “Late Interaction”（晚期交互） 检索机制：</h5>
-<p>$$<br>
-sim(Q, I) = \sum_{i=1}^{L_{Q}} \max_{j=1}^{L_{I}} (E_Q(Q)_l \cdot E_I(I)_j^T)<br>
-$$</p>
+$$
+sim(Q, I) = \sum_{i=1}^{L_{Q}} \max_{j=1}^{L_{I}} (E_Q(Q)_l \cdot E_I(I)_j^T)
+$$
 <p>这个公式计算的是文本 $Q$ 和图像 $I$ 之间的<strong>相似度得分（Score）</strong>。</p>
 <p>对于 Query 来说：$N$ 是文本 Token 的数量，对于 Image 来说：$M$ 是图像 Visual Token 的数量</p>
 <p>它的计算逻辑称为 <strong>MaxSim（最大相似度操作）</strong>：</p>
@@ -158,12 +158,12 @@ $$</p>
 <blockquote>
 <p>这里的思路明显利用的 ViT 的分块构建过程，通过一种与 RAG 向量数据库中计算 top-20 相似向量的方式计算图像和文字的相似关系，以此训练大模型，很有趣的观点</p>
 </blockquote>
-<p>$$<br>
-\begin{gather}<br>
-\mathcal{L}<em>{forward}= \mathcal{L}(Q</em>{pos}，I_{ori},{I_{neg}})+\beta\cdot\mathcal{L}(Q_{pos}，I_{ori}<sup>{aug},{I_{neg}</sup>{aug}}) \<br>
-{L}<em>{backward}=\mathcal{L}(I</em>{ori}，Q_{pos},{Q_{neg}})+\beta\cdot\mathcal{L}(I_{ori}^{aug}，Q_{pos},{Q_{neg}})<br>
-\end{gather}<br>
-$$</p>
+$$
+\begin{gather}
+\mathcal{L}_{forward}= \mathcal{L}(Q_{pos}, I_{ori}, \{I_{neg}\})+\beta\cdot\mathcal{L}(Q_{pos}, I_{ori}^{aug}, \{I_{neg}^{aug}\}) \\
+\mathcal{L}_{backward}= \mathcal{L}(I_{ori}, Q_{pos}, \{Q_{neg}\})+\beta\cdot\mathcal{L}(I_{ori}^{aug}, Q_{pos}, \{Q_{neg}\})
+\end{gather}
+$$
 <h3 id="da-mo-xing-yin-dao-de-yan-jin-ke-cheng-llm-ec" id="大模型引导的演进课程（LLM-EC）">大模型引导的演进课程（LLM-EC）</h3>
 <blockquote>
 <p>类似于 RAG 该部分也分为离线和在线阶段</p>
@@ -196,17 +196,17 @@ $$</p>
 <h3 id="he-xin-chuang-xin-1" id="核心创新-2">核心创新</h3>
 <p>引入了一种模仿人类认知过程的“分析-定位-推理”（Analysis-Localization-Reasoning, 简称 ALR）视觉推理范式</p>
 <h4 id="ye-mian-gan-zhi-de-shu-ru-biao-shi" id="页面感知的输入表示">页面感知的输入表示</h4>
-<p>DocSeeker 将<strong>文本页面标识符</strong>（例如 <code>&quot;Page i&quot;</code> 的文本嵌入向量 $e_i$）与该页对应的<strong>视觉 Token</strong>（图像经 Vision Transformer 和 Adapter 处理后的向量 $v_i$）进行了交织拼接 。<br>
-$$<br>
-X = e_Q \oplus  \bigoplus_{i=1}^N (e_i \oplus v_i)<br>
-$$</p>
+<p>DocSeeker 将<strong>文本页面标识符</strong>（例如 <code>&quot;Page i&quot;</code> 的文本嵌入向量 $e_i$）与该页对应的<strong>视觉 Token</strong>（图像经 Vision Transformer 和 Adapter 处理后的向量 $v_i$）进行了交织拼接 。</p>
+$$
+X = e_Q \oplus  \bigoplus_{i=1}^N (e_i \oplus v_i) 
+$$
 <p>其中 $e_Q$ 是用户问题的文本嵌入，$N$ 为总页数 。这种设计相当于在每个页面的视觉信息前加上了一个“指针”或“锚点”，强制模型在处理视觉 Token 时感知到当前处于哪一页 。</p>
 <h4 id="xian-shi-zheng-ju-ji-chu-de-jie-gou-hua-tui-li-fan-shi" id="显式证据基础的结构化推理范式">显式证据基础的结构化推理范式</h4>
-<p>将“思考过程（<code>&lt;think&gt;</code>）”与“最终答案（<code>&lt;answer&gt;</code>）”显式分离的做法 ，DocSeeker 强制模型输出一条严格、可解释且结构化的推理路径 $Y$<br>
-$$<br>
-Y = Y_{th} \oplus Y_{ans} = (Y_A \oplus Y_L \oplus Y_R) \oplus (Y_E \oplus Y_F)<br>
-$$<br>
-模型被要求规范化地输出以下五个部分 ：</p>
+<p>将“思考过程（<code>&lt;think&gt;</code>）”与“最终答案（<code>&lt;answer&gt;</code>）”显式分离的做法 ，DocSeeker 强制模型输出一条严格、可解释且结构化的推理路径 $Y$</p>
+$$
+Y = Y_{th} \oplus Y_{ans} = (Y_A \oplus Y_L \oplus Y_R) \oplus (Y_E \oplus Y_F)
+$$
+<p>模型被要求规范化地输出以下五个部分 ：</p>
 <ul class="lvl-0">
 <li class="lvl-2">
 <p><strong>问题分析 ($Y_A$, Question Analysis)</strong>：解构和分析用户的真实意图 。</p>
@@ -239,16 +239,16 @@ $$<br>
 </li>
 </ul>
 <p><strong>阶段 II：证据感知的 GRPO 强化学习 (Evidence-aware GRPO)</strong></p>
-<p>单靠 SFT 的模仿学习，模型生成的推理路径往往是次优的 。为了进一步突破上限，作者引入了强化学习（RL）阶段，采用 <strong>GRPO（组相对策略优化）</strong> 算法，让模型直接从结果信号中学习 。 作者为长文档 VQA 任务量身定制了一个多维度联合奖励函数：<br>
-$$<br>
-R = \lambda_1 R_{format} + \lambda_2 R_{evidence} + \lambda_3 R_{answer}<br>
-$$</p>
+<p>单靠 SFT 的模仿学习，模型生成的推理路径往往是次优的 。为了进一步突破上限，作者引入了强化学习（RL）阶段，采用 <strong>GRPO（组相对策略优化）</strong> 算法，让模型直接从结果信号中学习 。 作者为长文档 VQA 任务量身定制了一个多维度联合奖励函数：</p>
+$$
+R = \lambda_1 R_{format} + \lambda_2 R_{evidence} + \lambda_3 R_{answer}
+$$
 <ol>
 <li class="lvl-3">
 <p><strong>格式奖励 ($R_{format}$)</strong>：二值奖励（0或1），确保模型输出完全符合 <code>&lt;think&gt;</code>、<code>&lt;answer&gt;</code> 及内部子模块的标签规范 。</p>
 </li>
 <li class="lvl-3">
-<p><strong>证据定位奖励 ($R_{evidence}$)</strong>：根据模型识别的证据页面准确率打分 。它使用了<strong>加权的 F1 分数（通常 $\beta &gt; 1$）</strong>，这意味着该奖励<strong>更看重召回率（Recall）而非精确率（Precision）</strong>，鼓励模型“宁可多找，不能漏掉” 。</p>
+<p><strong>证据定位奖励 ($R_{evidence}$)</strong>：根据模型识别的证据页面准确率打分 。它使用了<strong>加权的 F1 分数（通常 $\beta > 1$）</strong>，这意味着该奖励<strong>更看重召回率（Recall）而非精确率（Precision）</strong>，鼓励模型“宁可多找，不能漏掉” 。</p>
 </li>
 <li class="lvl-3">
 <p><strong>答案奖励 ($R_{answer}$)</strong>：采用标准的平均归一化编辑相似度（ANLS）指标，评估最终文本答案的正确性 。</p>
@@ -1104,6 +1104,29 @@ $$</p>
     }
   });
 </script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     window.codeElements = document.querySelectorAll('.code');
