@@ -15,8 +15,33 @@
     <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Fri, 10 Jul 2026 02:40:37 GMT</pubDate>
+    <pubDate>Mon, 03 Aug 2026 14:47:27 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>看南大科研筑基有感</title>
+      <link>https://hitorikoishi.github.io/2026/08/03/%E7%9C%8B%E5%8D%97%E5%A4%A7%E7%A7%91%E7%A0%94%E7%AD%91%E5%9F%BA%E6%9C%89%E6%84%9F/</link>
+      <guid>https://hitorikoishi.github.io/2026/08/03/%E7%9C%8B%E5%8D%97%E5%A4%A7%E7%A7%91%E7%A0%94%E7%AD%91%E5%9F%BA%E6%9C%89%E6%84%9F/</guid>
+      <pubDate>Mon, 03 Aug 2026 10:17:16 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;p&gt;今天偶然间刷到了南京大学李樾老师的《南京大学结丹期教授助你科研筑基》，其中老师对于自己科研经验和教训的理解和感悟给了我很多启示，有一种大二遇到 jyy</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://hitorikoishi.github.io/tags/%E7%A7%91%E7%A0%94-%E4%BA%BA%E7%94%9F/">科研 人生</category>
+      
+      
+      <comments>https://hitorikoishi.github.io/2026/08/03/%E7%9C%8B%E5%8D%97%E5%A4%A7%E7%A7%91%E7%A0%94%E7%AD%91%E5%9F%BA%E6%9C%89%E6%84%9F/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>文档LLM校勘</title>
