@@ -15,8 +15,38 @@
     <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Tue, 04 Aug 2026 03:28:54 GMT</pubDate>
+    <pubDate>Wed, 19 Aug 2026 14:45:56 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>文档检索技术</title>
+      <link>https://hitorikoishi.github.io/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/</link>
+      <guid>https://hitorikoishi.github.io/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/</guid>
+      <pubDate>Wed, 19 Aug 2026 14:39:19 GMT</pubDate>
+      
+        
+        
+          
+          
+      <description>&lt;p&gt;对于目前的研究学习任务需求，需要细粒度的文本查询，以下&lt;/p&gt;
+&lt;h3 id=&quot;learning-to-rank-pai-xu-xue-xi&quot; id=&quot;Learning-to-Rank-排序学习&quot;&gt;Learning-to-Rank</description>
+          
+        
+      
+      
+      
+      
+      
+      <category domain="https://hitorikoishi.github.io/tags/NLP/">NLP</category>
+      
+      <category domain="https://hitorikoishi.github.io/tags/Information-Retrieval/">Information Retrieval</category>
+      
+      <category domain="https://hitorikoishi.github.io/tags/Fine-Grained-Retrieval/">Fine-Grained Retrieval</category>
+      
+      
+      <comments>https://hitorikoishi.github.io/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>看南大科研筑基有感</title>
