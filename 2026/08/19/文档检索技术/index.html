@@ -20,15 +20,15 @@
   <title>文档检索技术 - 「昨日，你与云」</title>
 
   
-    <meta name="description" content="对于目前的研究学习任务需求，需要细粒度的文本查询，以下 Learning-to-Rank 排序学习 让模型从历史数据中自己学习：什么样的候选文本应该排在前面，即训练模型在多路召回为每路分配的权重 LambdaMART，考虑把 A 和 B 的顺序调换，会对 NDCG &#x2F; MAP 等指标造成多大影响？（Lambdarank） 可以对每个 Query → Candidate 的结构提取几十甚至几百个特征">
+    <meta name="description" content="对于目前的研究学习任务需求，需要细粒度的文本查询，以下 BM25 评分公式 $$ \text{BM25}(D, Q) &#x3D; \sum_{i&#x3D;1}^{n} \text{IDF}(q_i) \cdot  \frac{f(q_i, D) \cdot (k_1 + 1)} {f(q_i, D) + k_1 \cdot \left(1 - b + b \cdot \frac{|D|}{\text{avgdl}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文档检索技术">
 <meta property="og:url" content="https://hitorikoishi.github.io/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/">
 <meta property="og:site_name" content="「昨日，你与云」">
-<meta property="og:description" content="对于目前的研究学习任务需求，需要细粒度的文本查询，以下 Learning-to-Rank 排序学习 让模型从历史数据中自己学习：什么样的候选文本应该排在前面，即训练模型在多路召回为每路分配的权重 LambdaMART，考虑把 A 和 B 的顺序调换，会对 NDCG &#x2F; MAP 等指标造成多大影响？（Lambdarank） 可以对每个 Query → Candidate 的结构提取几十甚至几百个特征">
+<meta property="og:description" content="对于目前的研究学习任务需求，需要细粒度的文本查询，以下 BM25 评分公式 $$ \text{BM25}(D, Q) &#x3D; \sum_{i&#x3D;1}^{n} \text{IDF}(q_i) \cdot  \frac{f(q_i, D) \cdot (k_1 + 1)} {f(q_i, D) + k_1 \cdot \left(1 - b + b \cdot \frac{|D|}{\text{avgdl}">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-08-19T14:39:19.000Z">
-<meta property="article:modified_time" content="2026-08-19T14:45:56.555Z">
+<meta property="article:modified_time" content="2026-08-22T08:54:46.402Z">
 <meta property="article:author" content="HitoriKoishi">
 <meta property="article:tag" content="NLP">
 <meta property="article:tag" content="Information Retrieval">
@@ -53,7 +53,7 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"HitoriKoishi","sameAs":[]},"dateCreated":"2026-08-19T22:39:19+08:00","dateModified":"2026-08-19T22:45:56+08:00","datePublished":"2026-08-19T22:39:19+08:00","description":"","headline":"文档检索技术","mainEntityOfPage":{"@type":"WebPage","@id":"https://hitorikoishi.github.io/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/"},"publisher":{"@type":"Organization","name":"HitoriKoishi","sameAs":[]},"url":"https://hitorikoishi.github.io/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/","keywords":"NLP, Information Retrieval, Fine-Grained Retrieval","image":[]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"HitoriKoishi","sameAs":[]},"dateCreated":"2026-08-19T22:39:19+08:00","dateModified":"2026-08-22T16:54:46+08:00","datePublished":"2026-08-19T22:39:19+08:00","description":"","headline":"文档检索技术","mainEntityOfPage":{"@type":"WebPage","@id":"https://hitorikoishi.github.io/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/"},"publisher":{"@type":"Organization","name":"HitoriKoishi","sameAs":[]},"url":"https://hitorikoishi.github.io/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/","keywords":"NLP, Information Retrieval, Fine-Grained Retrieval","image":[]}</script>
   
 </head>
 <body><div class="sitebg"><div class="siteblur"></div></div>
@@ -72,7 +72,7 @@
 
 
 
-<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/"><span class="title">文档检索技术</span></a><a class="item title" href="/2026/08/03/%E7%9C%8B%E5%8D%97%E5%A4%A7%E7%A7%91%E7%A0%94%E7%AD%91%E5%9F%BA%E6%9C%89%E6%84%9F/"><span class="title">看南大科研筑基有感</span></a><a class="item title" href="/2026/06/24/RAG%E5%85%AB%E8%82%A1/"><span class="title">RAG八股</span></a><a class="item title" href="/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/"><span class="title">文档LLM校勘</span></a><a class="item title" href="/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/"><span class="title">Google File System 笔记</span></a><a class="item title" href="/2025/11/24/Python%E6%97%A5%E5%BF%97%E5%BA%93loguru/"><span class="title">Python日志库loguru</span></a><a class="item title" href="/2025/10/20/LLM-CS336/"><span class="title">LLM-CS336</span></a><a class="item title" href="/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"><span class="title">Go语言入门</span></a><a class="item title" href="/2025/02/18/c-whale-market%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"><span class="title">c++ whale market项目总结</span></a><a class="item title" href="/2025/01/16/HelloWorld/"><span class="title">HelloWorld</span></a></div></widget>
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/"><span class="title">Go语言参考手册</span></a><a class="item title" href="/2026/08/19/%E6%96%87%E6%A1%A3%E6%A3%80%E7%B4%A2%E6%8A%80%E6%9C%AF/"><span class="title">文档检索技术</span></a><a class="item title" href="/2026/08/03/%E7%9C%8B%E5%8D%97%E5%A4%A7%E7%A7%91%E7%A0%94%E7%AD%91%E5%9F%BA%E6%9C%89%E6%84%9F/"><span class="title">看南大科研筑基有感</span></a><a class="item title" href="/2026/06/24/RAG%E5%85%AB%E8%82%A1/"><span class="title">RAG八股</span></a><a class="item title" href="/2026/06/26/LLM%E6%96%87%E6%A1%A3%E6%A0%A1%E5%8B%98/"><span class="title">文档LLM校勘</span></a><a class="item title" href="/2025/06/21/Google-File-System-%E7%AC%94%E8%AE%B0/"><span class="title">Google File System 笔记</span></a><a class="item title" href="/2025/11/24/Python%E6%97%A5%E5%BF%97%E5%BA%93loguru/"><span class="title">Python日志库loguru</span></a><a class="item title" href="/2025/10/20/LLM-CS336/"><span class="title">LLM-CS336</span></a><a class="item title" href="/2025/02/18/c-whale-market%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"><span class="title">c++ whale market项目总结</span></a><a class="item title" href="/2025/01/16/HelloWorld/"><span class="title">HelloWorld</span></a></div></widget>
 </div>
 <footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/HitoriKoishi" target="_blank" rel="external nofollow noopener noreferrer"><img src="https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/social/08a41b181ce68.svg"/></a></div></footer>
 </div></aside><div class="l_main" id="main">
@@ -85,7 +85,7 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-08-19T14:39:19.000Z">2026-08-19</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-19T14:45:56.555Z">2026-08-19</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2026-08-19T14:39:19.000Z">2026-08-19</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2026-08-22T08:54:46.402Z">2026-08-22</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -97,6 +97,67 @@
     
   </div>
   </div><article class="md-text content"><p>对于目前的研究学习任务需求，需要细粒度的文本查询，以下</p>
+<h3 id="bm-25" id="BM25">BM25</h3>
+<p>评分公式</p>
+$$
+\text{BM25}(D, Q) = \sum_{i=1}^{n} \text{IDF}(q_i) \cdot 
+\frac{f(q_i, D) \cdot (k_1 + 1)}
+{f(q_i, D) + k_1 \cdot \left(1 - b + b \cdot \frac{|D|}{\text{avgdl}}\right)}
+$$
+<p>其中：</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>$n$ 是查询中词项的数量</p>
+</li>
+<li class="lvl-2">
+<p>$f(q_i, D)$ 是词项 $q_i$ 在文档 $D$ 中的词频</p>
+</li>
+<li class="lvl-2">
+<p>$|D|$ 是文档长度（词数）</p>
+</li>
+<li class="lvl-2">
+<p>$\text{avgdl}$ 是语料库平均文档长度</p>
+</li>
+<li class="lvl-2">
+<p>$k_1$、$b$ 是可调超参数（通常 $k_1 \in [1.2, 2.0]$，$b \in [0.0, 0.75]$）</p>
+</li>
+<li class="lvl-2">
+<p>$N$ 是语料库文档总数</p>
+</li>
+<li class="lvl-2">
+<p>$N(q_i)$ 是包含词项 $q_i$ 的文档数量</p>
+</li>
+</ul>
+<p><strong>IDF（逆文档频率）部分</strong></p>
+$$
+\text{IDF}(q_i) = \log \frac{N - N(q_i) + 0.5}{N(q_i) + 0.5}
+$$
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>如果一个词出现在很多文档中（如“的”、“是”），$N(q_i)$ 大，对数结果小 → 该词对相关性贡献低。如果一个词只在少数文档中出现（如专业术语），$N(q_i)$小 → IDF 值大 → 该词能很好地区分文档。</p>
+</li>
+<li class="lvl-2">
+<p>加 0.5 是为了<strong>平滑</strong>，避免分母为零，同时减少极端值影响。</p>
+</li>
+</ul>
+<p><strong>词频饱和度部分（TF 变换）</strong></p>
+$$
+\frac{f(q_i, D) \cdot (k_1 + 1)}
+{f(q_i, D) + k_1}
+$$
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>当 $f=0$ 时，整体为 0（词未出现，无贡献）。当 $f$从 0 增大时，分子线性增长，但分母也增长，导致<strong>增速递减</strong>（饱和曲线）。当  $f→∞$ 时，该分式趋近于 $k_1+1$（上限），而非无限增长。</p>
+</li>
+<li class="lvl-2">
+<p><strong>目的</strong>：防止某个词出现次数过多时，分数无限放大（比如“Python”出现 100 次不等于相关度是出现 10 次的 10 倍）。</p>
+</li>
+</ul>
+<p><strong>文档长度归一化因子</strong></p>
+$$
+\left(1 - b + b \cdot \frac{|D|}{\text{avgdl}}\right)
+$$
+<p>长文档更可能包含某个词，但不应因此获得更高分</p>
 <h3 id="learning-to-rank-pai-xu-xue-xi" id="Learning-to-Rank-排序学习">Learning-to-Rank 排序学习</h3>
 <p>让模型从历史数据中自己学习：什么样的候选文本应该排在前面，即训练模型在多路召回为每路分配的权重</p>
 <p>LambdaMART，考虑把 A 和 B 的顺序调换，会对 NDCG / MAP 等指标造成多大影响？（Lambdarank）</p>
@@ -147,8 +208,8 @@
 <p>SPLADE的向量生成过程是一个从稠密上下文到稀疏语义向量的精确变换。给定输入文档，BERT编码器首先为每个位置生成上下文感知的MLM logits，形状为<code>[batch, seq_len, vocab_size]</code>。随后，模型通过<strong>三次关键操作</strong>将其压缩为<code>[batch, vocab_size]</code>的文档表示：第一步是<code>ReLU</code>激活函数，将所有负logit硬截断为0，实现初步稀疏化；第二步是<code>log(1+x)</code>对数变换，对保留的正值进行平滑压缩，防止大数值主导后续计算；第三步是在序列长度维度上执行<strong>最大池化（Max Pooling）</strong>，这意味着只要文档中任意一个位置对词表中某个词（无论是否在原文出现）产生正向激活，该词就会被保留在最终的文档向量中。最终，绝大多数维度为0，仅少数关键词及语义扩展词（如“mac”扩展出“dairy”）拥有正权重，形成高效的稀疏向量。</p>
 <p>这种设计的精妙之处在于，<strong>四重机制协同工作，同时实现了“词汇扩展”和“稀疏化”</strong>。词汇扩展源于BERT的MLM预训练能力——模型在预测掩码词时，天然学会将语义相关的词（如“cheese”与“dairy”）在隐空间中关联，而Max Pooling则负责捕获并保留这些跨位置的语义激活，使文档向量能包含原文未出现的相关词。稀疏化则主要依赖<code>ReLU</code>的硬截断和训练时的<strong>FLOPS正则化损失</strong>，后者会惩罚在整个批次中被过多文档激活的词，迫使模型只保留最必要、最具区分性的关键词，从而抑制噪声扩展。同时，<code>log(1+x)</code>保证了权重分布的平滑性，使得点积分数能够稳定反映文档间的相关性，而非被少数极端值支配。最终，这一表示既能像传统倒排索引那样快速检索，又能像稠密向量那样捕捉深度语义，是SPLADE兼具效率与效果的根本原因。</p>
 <h3 id="multi-vector" id="Multi-vector">Multi-vector</h3>
-<p><strong>Multi-vector 不再强迫一段文本仅转化一个向量，而是让一段文本由多个 token 向量表示，再进行细粒度匹配。由于问题和文档都被转化为多个向量的表示形式，因此又需要维护一种数据的向量表示</strong></p>
-<p>对于多个向量，转化出了 MaxSim 算法计算相似度，对于 Query 的每一个 token，只找 Document 中与它最相似的 token。即保留查询中的大量局部语义，然后在文档中逐个寻找最佳匹配。</p>
+<p><strong>Multi-vector 不再强迫一段文本仅转化一个向量，而是让一段文本由多个 token 向量表示，再进行细粒度匹配。由于问题和文档都被转化为多个向量的表示形式，因此又需要维护另一种数据的向量表示，这种表示形式将文本的每个 token 表示为一个向量，相比较于Dense和SPLADE额外需要数倍的储存空间</strong></p>
+<p>对于多个向量，转化出了 MaxSim 算法计算相似度，对于 Query 的每一个 token，只找 Document 中与它最相似的 token。即保留查询中的大量局部语义，然后在文档中逐个寻找最佳匹配</p>
 <h3 id="hard-negative-mining" id="Hard-Negative-Mining">Hard Negative Mining</h3>
 <p><strong>Hard Negative Mining</strong> 实际上是一种训练策略，在一些样例中，模型认为（这里的认为可以进一步阐释）检索结果与查询文档高度相关，但实际上并不是同一事件。注意，相比于普通负样本，Hard Negative 是“模型找出来的错误”。因此需要把这种错误结果单独标记，并作为训练数据训练。训练后的模型再输出高相关的错误结果之后，同样进行标注和训练，如此迭代。即 HNM 用来构造训练数据，然后对 <strong>Dense Retriever 或 SPLADE 这类 embedding/retrieval 模型进行微调（fine-tuning）</strong></p>
 <blockquote>
@@ -182,7 +243,7 @@
 
 
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#learning-to-rank-pai-xu-xue-xi"><span class="toc-text">Learning-to-Rank 排序学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#splade-sp-strong-a-strong-rse-strong-l-strong-exical-strong-a-strong-n-strong-d-strong-strong-e-strong-xpansion-model"><span class="toc-text">SPLADE（Sparse Lexical  and Expansion model）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#multi-vector"><span class="toc-text">Multi-vector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hard-negative-mining"><span class="toc-text">Hard Negative Mining</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a></div></widget>
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#bm-25"><span class="toc-text">BM25</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#learning-to-rank-pai-xu-xue-xi"><span class="toc-text">Learning-to-Rank 排序学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#splade-sp-strong-a-strong-rse-strong-l-strong-exical-strong-a-strong-n-strong-d-strong-strong-e-strong-xpansion-model"><span class="toc-text">SPLADE（Sparse Lexical  and Expansion model）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#multi-vector"><span class="toc-text">Multi-vector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hard-negative-mining"><span class="toc-text">Hard Negative Mining</span></a></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>回到顶部</span></a></div></widget>
 </div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>

@@ -15,7 +15,7 @@
     <atom:link href="https://hitorikoishi.github.io/rss.xml" rel="self" type="application/rss+xml"/>
     
     <description></description>
-    <pubDate>Wed, 19 Aug 2026 14:45:56 GMT</pubDate>
+    <pubDate>Sat, 22 Aug 2026 08:54:46 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -29,7 +29,10 @@
           
           
       <description>&lt;p&gt;对于目前的研究学习任务需求，需要细粒度的文本查询，以下&lt;/p&gt;
-&lt;h3 id=&quot;learning-to-rank-pai-xu-xue-xi&quot; id=&quot;Learning-to-Rank-排序学习&quot;&gt;Learning-to-Rank</description>
+&lt;h3 id=&quot;bm-25&quot; id=&quot;BM25&quot;&gt;BM25&lt;/h3&gt;
+&lt;p&gt;评分公式&lt;/p&gt;
+$$
+&#92;text{BM25}(D, Q) = &#92;sum_{i=1}^{n} &#92;text{IDF}(q_i)</description>
           
         
       
@@ -185,18 +188,16 @@
     </item>
     
     <item>
-      <title>Go语言入门</title>
-      <link>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/</link>
-      <guid>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/</guid>
+      <title>Go语言参考手册</title>
+      <link>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</link>
+      <guid>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/</guid>
       <pubDate>Tue, 24 Jun 2025 15:15:11 GMT</pubDate>
       
         
         
           
           
-      <description>&lt;h1 id=&quot;cheng-xu-jie-gou&quot; id=&quot;程序结构&quot;&gt;程序结构&lt;/h1&gt;
-&lt;h2 id=&quot;sheng-ming-yu-bian-liang&quot; id=&quot;声明与变量&quot;&gt;声明与变量&lt;/h2&gt;
-&lt;p&gt;在 Go</description>
+      <description>&lt;h2 id=&quot;bao-he-gong-ju&quot;</description>
           
         
       
@@ -207,7 +208,7 @@
       <category domain="https://hitorikoishi.github.io/tags/Go/">Go</category>
       
       
-      <comments>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/#disqus_thread</comments>
+      <comments>https://hitorikoishi.github.io/2025/06/24/Go%E8%AF%AD%E8%A8%80%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/#disqus_thread</comments>
       
     </item>
     
